@@ -9,9 +9,6 @@ above_version = 5.010
 lib_sections    = NAME | VERSION | DESCRIPTION | SYNOPSIS | COPYRIGHT AND LICENSE
 script_sections = NAME | USAGE | OPTIONS | EXIT STATUS | COPYRIGHT AND LICENSE
 
-[Documentation::PodSpelling]
-stop_words = GSI Pre pre subcommand
-
 [Subroutines::ProhibitCallsToUndeclaredSubs]
 exempt_subs = Carp::croak Moose::around Moose::extends Moose::has Moose::with MooseX::Has::Sugar::coerce MooseX::Has::Sugar::lazy MooseX::Has::Sugar::lazy_build MooseX::Has::Sugar::required MooseX::Has::Sugar::rw MooseX::Has::Sugar::ro MooseX::Types::subtype MooseX::Types::as MooseX::Types::enum MooseX::Types::class_type MooseX::Types::message MooseX::Types::where Path::Class::dir Path::Class::file Readonly::Readonly TryCatch::try TryCatch::catch TryCatch::where
 

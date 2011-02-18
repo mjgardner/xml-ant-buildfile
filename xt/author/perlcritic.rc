@@ -9,6 +9,9 @@ allowed_pragmata = diagnostics feature perlversion strict warnings utf8
 [Compatibility::PerlMinimumVersionAndWhy]
 above_version = 5.010
 
+[Documentation::PodSpelling]
+stop_words = API accessor pre url username
+
 [Documentation::RequirePodSections]
 lib_sections    = NAME | VERSION | DESCRIPTION | SYNOPSIS | COPYRIGHT AND LICENSE
 script_sections = NAME | USAGE | OPTIONS | EXIT STATUS | COPYRIGHT AND LICENSE

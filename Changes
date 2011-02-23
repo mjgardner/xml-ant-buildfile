@@ -1,5 +1,6 @@
 {{$NEXT}}
-
+    Fix Subversion update-or-checkout logic
+    Windows/Cygwin portability fixes
 0.110350  2011-02-04 15:00:30 America/New_York
     Factor GSI::Automerge::Schema out into its own distro
 0.110340  2011-02-03 17:24:03 America/New_York

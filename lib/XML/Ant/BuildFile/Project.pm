@@ -22,16 +22,16 @@ has _properties => (
     default     => sub { {} },
 );
 
-has properties => ( ro, isa => HashRef[Str], default => sub { {} } );
+has properties => ( ro, isa => HashRef [Str], default => sub { {} } );
 
 around properties => sub {
-    my ($orig, $self) = @ARG;
-    return { %{$self->_properties}, %{$self->$orig() } };
+    my ( $orig, $self ) = @ARG;
+    return { %{ $self->_properties }, %{ $self->$orig() } };
 };
 
 has filelists => (
-    isa    => 'HashRef[XML::Ant::BuildFile::Project::FileList]',
-    traits => ['XPathObjectMap'],
+    isa         => 'HashRef[XML::Ant::BuildFile::Project::FileList]',
+    traits      => ['XPathObjectMap'],
     xpath_query => '/project/filelist',
     xpath_key   => './@id',
 );

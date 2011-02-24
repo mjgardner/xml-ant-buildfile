@@ -46,7 +46,7 @@ has files => ( ro, lazy,
 
 sub _property_subst {
     my ( $self, $source ) = @ARG;
-    my %properties = %{$self->properties};
+    my %properties = %{ $self->properties };
     while ( my ( $property, $value ) = each %properties ) {
         $source =~ s/ \$ $property /$value/g;
     }

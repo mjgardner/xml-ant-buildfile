@@ -1,4 +1,4 @@
-package YUI::Compressor::Ant::BuildFile::Project;
+package XML::Ant::BuildFile::Project;
 
 use English '-no_match_vars';
 use Moose;
@@ -30,7 +30,7 @@ around properties => sub {
 };
 
 has filelists => (
-    isa    => 'HashRef[YUI::Compressor::Ant::BuildFile::Project::FileList]',
+    isa    => 'HashRef[XML::Ant::BuildFile::Project::FileList]',
     traits => ['XPathObjectMap'],
     xpath_query => '/project/filelist',
     xpath_key   => './@id',

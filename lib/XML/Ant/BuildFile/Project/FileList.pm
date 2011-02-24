@@ -1,4 +1,4 @@
-package YUI::Compressor::Ant::BuildFile::Project::FileList;
+package XML::Ant::BuildFile::Project::FileList;
 
 use English '-no_match_vars';
 use Path::Class;
@@ -12,7 +12,7 @@ use namespace::autoclean;
 with 'XML::Rabbit::Node';
 
 has project => (
-    isa         => 'YUI::Compressor::Ant::BuildFile::Project',
+    isa         => 'XML::Ant::BuildFile::Project',
     traits      => ['XPathObject'],
     xpath_query => '/',
     handles     => ['properties'],

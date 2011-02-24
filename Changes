@@ -1,5 +1,5 @@
 {{$NEXT}}
-
+    fix to set URL from working copy
 0.130     2011-02-24 13:09:07 America/New_York
     fixes to SVN update and authentication
     fixes to Ant on Cygwin

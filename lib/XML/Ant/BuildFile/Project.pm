@@ -4,21 +4,33 @@ package XML::Ant::BuildFile::Project;
 
 use English '-no_match_vars';
 use Moose;
-use MooseX::Has::Sugar;
+use Moose::Util::TypeConstraints;
+use MooseX::Has::Sugar::Minimal;
 use MooseX::Types::Moose qw(ArrayRef HashRef Str);
+use MooseX::Types::Path::Class 'File';
 use namespace::autoclean;
 with 'XML::Rabbit::RootNode';
 
-has properties => ( ro, isa => HashRef [Str], default => sub { {} } );
+has properties => ( is => ro, isa => HashRef [Str], default => sub { {} } );
 
 around properties => sub {
     my ( $orig, $self ) = @ARG;
     return { %{ $self->_properties }, %{ $self->$orig() } };
 };
 
-{
-    ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+=attr file
 
+On top of L<XML::Rabbit|XML::Rabbit>'s normal behavior, this class will also
+coerce L<Path::Class::File|Path::Class::File> objects to the strings expected
+by L<XML::Rabbit::Role::Document|XML::Rabbit::Role::Document>.
+
+=cut
+
+subtype 'FileStr', as Str;
+coerce 'FileStr', from File, via {"$ARG"};
+has '+_file' => ( isa => 'FileStr', coerce => 1 );
+
+{    ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
     has name => (
         isa         => Str,
         traits      => ['XPathValue'],
@@ -39,6 +51,12 @@ around properties => sub {
         traits      => ['XPathObjectMap'],
         xpath_query => '/project/filelist',
         xpath_key   => './@id',
+    );
+
+    has targets => (
+        isa => ArrayRef [Str],
+        traits      => ['XPathValueList'],
+        xpath_query => '/project/target/@name',
     );
 }
 

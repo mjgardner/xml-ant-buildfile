@@ -21,8 +21,7 @@ has project => (
     handles     => ['properties'],
 );
 
-{
-    ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+{    ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
     my %attr = ( _dir_attr => './@dir', id => './@id' );
     for ( keys %attr ) {
         has $ARG => (

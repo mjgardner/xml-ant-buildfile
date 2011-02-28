@@ -8,15 +8,10 @@ use Moose::Util::TypeConstraints;
 use MooseX::Has::Sugar::Minimal;
 use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class 'File';
+use Path::Class;
+use Readonly;
 use namespace::autoclean;
 with 'XML::Rabbit::RootNode';
-
-has properties => ( is => ro, isa => HashRef [Str], default => sub { {} } );
-
-around properties => sub {
-    my ( $orig, $self ) = @ARG;
-    return { %{ $self->_properties }, %{ $self->$orig() } };
-};
 
 =attr file
 
@@ -30,7 +25,15 @@ subtype 'FileStr', as Str;
 coerce 'FileStr', from File, via {"$ARG"};
 has '+_file' => ( isa => 'FileStr', coerce => 1 );
 
-{    ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+{
+## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+
+=attr name
+
+Name of the Ant project.
+
+=cut
+
     has name => (
         isa         => Str,
         traits      => ['XPathValue'],
@@ -38,13 +41,22 @@ has '+_file' => ( isa => 'FileStr', coerce => 1 );
     );
 
     has _properties => (
-        isa => HashRef [Str],
+        lazy        => 1,
+        isa         => HashRef [Str],
         traits      => ['XPathValueMap'],
         xpath_query => '//property[@name and @value]',
         xpath_key   => './@name',
         xpath_value => './@value',
         default     => sub { {} },
     );
+
+=attr filelists
+
+Hash reference of
+L<XML::Ant::BuildFile::Project::FileList|XML::Ant::BuildFile::Project::FileList>s
+where the keys are the C<id> values from the C<< <filelist> >> elements.
+
+=cut
 
     has filelists => (
         isa         => 'HashRef[XML::Ant::BuildFile::Project::FileList]',
@@ -53,12 +65,51 @@ has '+_file' => ( isa => 'FileStr', coerce => 1 );
         xpath_key   => './@id',
     );
 
+=attr targets
+
+Array reference of target names from the build file.
+
+=cut
+
     has targets => (
         isa => ArrayRef [Str],
         traits      => ['XPathValueList'],
         xpath_query => '/project/target/@name',
     );
 }
+
+=attr properties
+
+Read-only hash reference to properties set by the build file.  This also
+contains the following predefined properties as per the Ant documentation:
+
+=over
+
+=item os.name
+
+=item basedir
+
+=item ant.file
+
+=item ant.project.name
+
+=back
+
+=cut
+
+has properties => ( is => ro, isa => HashRef [Str], default => sub { {} } );
+
+around properties => sub {
+    my ( $orig, $self ) = @ARG;
+    return {
+        'os.name'          => $OSNAME,
+        'basedir'          => file( $self->_file )->dir->stringify(),
+        'ant.file'         => $self->_file,
+        'ant.project.name' => $self->name,
+        %{ $self->_properties },
+        %{ $self->$orig() },
+    };
+};
 
 __PACKAGE__->meta->make_immutable();
 1;

@@ -1,9 +1,10 @@
 {{$NEXT}}
 
 0.140     2011-03-03 23:05:46 America/New_York
-
+    don't follow symlinks when looking for Ant build files
+    kluge to move YUI generated files to root of working copy
 0.132     2011-02-24 18:21:47 America/New_York
-
+    pom.xml and yui-build.xml mixed with content at trunk root and no separate content subdirectory
 0.131     2011-02-24 15:29:25 America/New_York
     fix to set URL from working copy
 0.130     2011-02-24 13:09:07 America/New_York

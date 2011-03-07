@@ -24,7 +24,7 @@ functions = :builtins
 exclude_functions = print say
 
 [Subroutines::ProhibitCallsToUndeclaredSubs]
-exempt_subs = Carp::carp Carp::croak File::Copy::move Moose::Role::has Moose::Role::with Moose::around Moose::extends Moose::has Moose::with Moose::Util::TypeConstraints::as Moose::Util::TypeConstraints::coerce Moose::Util::TypeConstraints::from Moose::Util::TypeConstraints::subtype Moose::Util::TypeConstraints::via MooseX::Has::Sugar::coerce MooseX::Has::Sugar::lazy MooseX::Has::Sugar::lazy_build MooseX::Has::Sugar::required MooseX::Has::Sugar::ro MooseX::Has::Sugar::rw MooseX::Has::Sugar::Minimal::ro MooseX::Types::as MooseX::Types::class_type MooseX::Types::enum MooseX::Types::message MooseX::Types::subtype MooseX::Types::where Path::Class::dir Path::Class::file Readonly::Readonly SVN::Simple::Client::Error::svn_try TryCatch::catch TryCatch::try TryCatch::where
+exempt_subs = Carp::carp Carp::croak File::Copy::move Moose::around Moose::extends Moose::has Moose::with Moose::Role::after Moose::Role::has Moose::Role::with Moose::Util::TypeConstraints::as Moose::Util::TypeConstraints::coerce Moose::Util::TypeConstraints::from Moose::Util::TypeConstraints::subtype Moose::Util::TypeConstraints::via MooseX::Has::Sugar::coerce MooseX::Has::Sugar::lazy MooseX::Has::Sugar::lazy_build MooseX::Has::Sugar::required MooseX::Has::Sugar::ro MooseX::Has::Sugar::rw MooseX::Has::Sugar::Minimal::ro MooseX::Has::Sugar::Minimal::rw MooseX::Types::as MooseX::Types::class_type MooseX::Types::enum MooseX::Types::message MooseX::Types::subtype MooseX::Types::where Path::Class::dir Path::Class::file Readonly::Readonly SVN::Simple::Client::Error::svn_try TryCatch::catch TryCatch::try TryCatch::where
 
 [TestingAndDebugging::RequireUseStrict]
 equivalent_modules = Modern::Perl

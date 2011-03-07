@@ -59,7 +59,7 @@ where the keys are the C<id> values from the C<< <filelist> >> elements.
 =cut
 
     has filelists => (
-        isa         => 'HashRef[XML::Ant::BuildFile::Project::FileList]',
+        isa => HashRef ['XML::Ant::BuildFile::Project::FileList'],
         traits      => ['XPathObjectMap'],
         xpath_query => '/project/filelist',
         xpath_key   => './@id',

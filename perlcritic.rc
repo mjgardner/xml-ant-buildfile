@@ -13,7 +13,7 @@ above_version = 5.010
 flowcontrol = carp cluck confess croak die exit goto warn exit
 
 [Documentation::PodSpelling]
-stop_words = API accessor bugtracker GSI LTA minify pre subcommand ident Runtime config configfile url username webstore yuicompressor minifying SRM CSS JavaScript YUI minified SVN Pre GSI's webstores RevisionNumber RevisionEnum RevisionDate SvnError SvnUri Automerge repo CVS svnlook STDERR
+stop_words = autounlock API accessor bugtracker GSI LTA minify pre subcommand ident Runtime config configfile url username webstore yuicompressor minifying SRM CSS JavaScript YUI minified SVN Pre GSI's webstores RevisionNumber RevisionEnum RevisionDate SvnError SvnUri Automerge repo CVS svnlook STDERR
 
 [Documentation::RequirePodSections]
 lib_sections = NAME | VERSION | SYNOPSIS | DESCRIPTION | BUGS | AUTHOR | COPYRIGHT AND LICENSE

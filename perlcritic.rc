@@ -5,15 +5,11 @@ exclude = Compatibility::PodMinimumVersion Documentation::RequirePodAtEnd Editor
 [Lax::RequireExplicitPackage::ExceptForPragmata]
 allowed_pragmata = diagnostics feature perlversion strict warnings utf8
 
-# since we're using Modern::Perl
-[Compatibility::PerlMinimumVersionAndWhy]
-above_version = 5.010
-
 [ControlStructures::ProhibitPostfixControls]
 flowcontrol = carp cluck confess croak die exit goto warn exit
 
 [Documentation::PodSpelling]
-stop_words = filelists os basedir hashref autounlock API accessor bugtracker GSI LTA minify pre subcommand ident Runtime config configfile url username webstore yuicompressor minifying SRM CSS JavaScript YUI minified SVN Pre GSI's webstores RevisionNumber RevisionEnum RevisionDate SvnError SvnUri Automerge repo CVS svnlook STDERR
+stop_words = filelists os basedir bugtracker
 
 [Documentation::RequirePodSections]
 lib_sections = NAME | VERSION | SYNOPSIS | DESCRIPTION | BUGS | AUTHOR | COPYRIGHT AND LICENSE
@@ -24,13 +20,10 @@ functions = :builtins
 exclude_functions = print say
 
 [Subroutines::ProhibitCallsToUndeclaredSubs]
-exempt_subs = Carp::carp Carp::croak File::Copy::move Moose::around Moose::extends Moose::has Moose::with Moose::Role::after Moose::Role::has Moose::Role::with Moose::Util::TypeConstraints::as Moose::Util::TypeConstraints::coerce Moose::Util::TypeConstraints::from Moose::Util::TypeConstraints::subtype Moose::Util::TypeConstraints::via MooseX::Has::Sugar::coerce MooseX::Has::Sugar::lazy MooseX::Has::Sugar::lazy_build MooseX::Has::Sugar::required MooseX::Has::Sugar::ro MooseX::Has::Sugar::rw MooseX::Has::Sugar::Minimal::ro MooseX::Has::Sugar::Minimal::rw MooseX::Types::as MooseX::Types::class_type MooseX::Types::enum MooseX::Types::message MooseX::Types::subtype MooseX::Types::where Path::Class::dir Path::Class::file Readonly::Readonly SVN::Simple::Client::Error::svn_try TryCatch::catch TryCatch::try TryCatch::where
+exempt_subs = Carp::carp Moose::around Moose::has Moose::with Moose::Role::has Moose::Util::TypeConstraints::as Moose::Util::TypeConstraints::coerce Moose::Util::TypeConstraints::from Moose::Util::TypeConstraints::subtype Moose::Util::TypeConstraints::via MooseX::Has::Sugar::coerce MooseX::Has::Sugar::lazy MooseX::Has::Sugar::lazy_build MooseX::Has::Sugar::required MooseX::Has::Sugar::ro MooseX::Has::Sugar::rw MooseX::Has::Sugar::Minimal::ro Path::Class::dir Path::Class::file TryCatch::catch TryCatch::try
 
 [TestingAndDebugging::RequireUseStrict]
 equivalent_modules = Modern::Perl
 
 [TestingAndDebugging::RequireUseWarnings]
 equivalent_modules = Modern::Perl
-
-[TestingAndDebugging::ProhibitNoStrict]
-allow = refs

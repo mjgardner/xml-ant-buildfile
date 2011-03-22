@@ -85,7 +85,8 @@ this file list with all property substitutions applied.
 
 has files => ( ro, lazy_build, isa => ArrayRef [File], init_arg => undef );
 
-sub _build_files {
+sub _build_files
+{    ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
     my $self = shift;
     my @file_names;
 
@@ -93,7 +94,7 @@ sub _build_files {
         push @file_names, @{ $self->_file_names };
     }
     if ( defined $self->_files_attr_names ) {
-        push @file_names, split /[,\s]*/, $self->_files_attr_names;
+        push @file_names, split / [,\s]* /, $self->_files_attr_names;
     }
 
     return [ map { $self->directory->file( $self->_property_subst($ARG) ) }
@@ -116,4 +117,16 @@ __END__
 
 =head1 SYNOPSIS
 
+    use XML::Ant::BuildFile::Project;
+
+    my $project = XML::Ant::BuildFile::Project->new( file => 'build.xml' );
+    for my $list_ref (@{$project->file_lists}) {
+        print 'id: ', $list_ref->id, "\n";
+        print join "\n", @{$list_ref->files};
+        print "\n\n";
+    }
+
 =head1 DESCRIPTION
+
+See L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project> for a complete
+description.

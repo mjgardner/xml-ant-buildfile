@@ -122,9 +122,8 @@ __END__
     my $project = XML::Ant::BuildFile::Project->new( file => 'build.xml' );
     print 'Project name: ', $project->name, "\n";
     print "File lists:\n";
-    my %file_lists = %{$project->file_lists};
-    while (my ($name, $list_ref) = each %file_lists) {
-        print "$name\n";
+    for my $list_ref (@{$project->file_lists}) {
+        print 'id: ', $list_ref->id, "\n";
         print join "\n", @{$list_ref->files};
         print "\n\n";
     }

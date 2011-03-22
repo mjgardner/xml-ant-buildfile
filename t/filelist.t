@@ -1,6 +1,6 @@
 #!perl
 
-use Test::More tests => 7;
+use Test::Most tests => 8;
 use English '-no_match_vars';
 use Readonly;
 use Path::Class;
@@ -22,20 +22,22 @@ $project = new_ok(
 );
 
 is( $project->name, 'test', 'project name' );
-cmp_ok( $project->targets, '~~', [qw(simple double nested)], 'target names' );
+cmp_deeply( $project->targets, [qw(simple double nested)], 'target names' );
 
 my @filelists = @{ $project->filelists };
 is( scalar @filelists, 3, 'filelists' );
 
-cmp_ok(
+cmp_deeply(
     [ map { $ARG->id } @filelists ],
-    '~~', [ ('filelist') x 3 ],
+    [ ('filelist') x 3 ],
     'filelist ids',
 );
 
-cmp_ok(
+cmp_deeply(
     [ map { $ARG->directory->stringify() } @filelists ],
-    '~~',
     [ (q{.}) x 3 ],
     'filelist dirs',
 );
+
+cmp_deeply( [ map { $ARG->stringify() } map { @{ $ARG->files } } @filelists ],
+    [ map {"./$ARG"} qw(a a b a b) ], 'files' );

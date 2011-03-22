@@ -50,10 +50,16 @@ C<id> attribute of this file list.
         );
     }
 
-    has _file_names => (
+    has _file_names => ( ro,
         isa => ArrayRef [Str],
         traits      => ['XPathValueList'],
         xpath_query => './file/@name',
+    );
+
+    has _files_attr_names => ( ro,
+        isa         => Str,
+        traits      => ['XPathValue'],
+        xpath_query => './@files',
     );
 }
 
@@ -77,15 +83,22 @@ this file list with all property substitutions applied.
 
 =cut
 
-has files => ( ro, lazy,
-    isa => ArrayRef [File],
-    init_arg => undef,
-    default  => sub {
-        [   map { $ARG[0]->directory->file( $ARG[0]->_property_subst($ARG) ) }
-                @{ $ARG[0]->_file_names }
-        ];
-    },
-);
+has files => ( ro, lazy_build, isa => ArrayRef [File], init_arg => undef );
+
+sub _build_files {
+    my $self = shift;
+    my @file_names;
+
+    if ( defined $self->_file_names ) {
+        push @file_names, @{ $self->_file_names };
+    }
+    if ( defined $self->_files_attr_names ) {
+        push @file_names, split /[,\s]*/, $self->_files_attr_names;
+    }
+
+    return [ map { $self->directory->file( $self->_property_subst($ARG) ) }
+            @file_names ];
+}
 
 sub _property_subst {
     my ( $self, $source ) = @ARG;

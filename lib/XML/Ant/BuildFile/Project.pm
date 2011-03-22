@@ -52,9 +52,8 @@ Name of the Ant project.
 
 =attr filelists
 
-Hash reference of
-L<XML::Ant::BuildFile::Project::FileList|XML::Ant::BuildFile::Project::FileList>s
-where the keys are the C<id> values from the C<< <filelist> >> elements.
+Array reference of
+L<XML::Ant::BuildFile::Project::FileList|XML::Ant::BuildFile::Project::FileList>s.
 
 =cut
 

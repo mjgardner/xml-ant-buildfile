@@ -12,7 +12,7 @@ use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class qw(Dir File);
 use namespace::autoclean;
-with 'XML::Rabbit::Node';
+with 'XML::Rabbit::Node' => { -version => '0.0.4' };
 
 =attr project
 

@@ -1,5 +1,5 @@
 {{$NEXT}}
-
+    require XML::Rabbit 0.0.4 explicitly so the FileList module will compile
 0.201     2011-03-22 21:44:49 America/New_York
     remove dependency test on ant executable
 0.200     2011-03-22 13:57:16 America/New_York

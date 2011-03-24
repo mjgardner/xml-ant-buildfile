@@ -67,7 +67,7 @@ L<XML::Ant::BuildFile::Project::FileList|XML::Ant::BuildFile::Project::FileList>
 
 Hash reference of
 L<XML::Ant::BuildFile::Project::Target|XML::Ant::BuildFile::Project::Target>s
-from the build file.
+from the build file.  The keys are the target names.
 
 =method target_names
 

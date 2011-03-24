@@ -65,14 +65,16 @@ L<XML::Ant::BuildFile::Project::FileList|XML::Ant::BuildFile::Project::FileList>
 
 =attr targets
 
-Array reference of target names from the build file.
+Array reference of target L<XML::Rabbit::Node|XML::Rabbit::Node>s
+from the build file.
 
 =cut
 
     has targets => (
-        isa => ArrayRef [Str],
-        traits      => ['XPathValueList'],
-        xpath_query => '/project/target/@name',
+        isa         => 'HashRef[XML::Ant::BuildFile::Project::Target]',
+        traits      => ['XPathObjectMap'],
+        xpath_query => '/project/target[@name]',
+        xpath_key   => './@name',
     );
 }
 

@@ -10,7 +10,7 @@ XML::Ant::BuildFile::Project - consume Ant build files
 
 =head1 VERSION
 
-version 0.202
+version 0.203
 
 =head1 SYNOPSIS
 
@@ -49,7 +49,8 @@ L<XML::Ant::BuildFile::Project::FileList|XML::Ant::BuildFile::Project::FileList>
 
 =head2 targets
 
-Array reference of target names from the build file.
+Array reference of target L<XML::Rabbit::Node|XML::Rabbit::Node>s
+from the build file.
 
 =head2 properties
 

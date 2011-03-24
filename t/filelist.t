@@ -22,7 +22,11 @@ $project = new_ok(
 );
 
 is( $project->name, 'test', 'project name' );
-cmp_deeply( $project->targets, [qw(simple double nested)], 'target names' );
+cmp_bag(
+    [ keys %{ $project->targets } ],
+    [qw(simple double nested)],
+    'target names',
+);
 
 my @filelists = @{ $project->filelists };
 is( scalar @filelists, 3, 'filelists' );

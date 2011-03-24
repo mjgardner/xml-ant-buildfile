@@ -69,6 +69,12 @@ Hash reference of
 L<XML::Ant::BuildFile::Project::Target|XML::Ant::BuildFile::Project::Target>s
 from the build file.  The keys are the target names.
 
+=method all_targets
+
+Returns a list of all targets as
+L<XML::Ant::BuildFile::Project::Target|XML::Ant::BuildFile::Project::Target>
+objects.
+
 =method target_names
 
 Returns a list of the target names from the build file.
@@ -99,6 +105,7 @@ Returns a count of the number of targets in the build file.
             get_target   => 'get',
             has_target   => 'exists',
             num_targets  => 'count',
+            all_targets  => 'values',
         },
     );
 }

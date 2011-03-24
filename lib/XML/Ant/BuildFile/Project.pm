@@ -65,16 +65,41 @@ L<XML::Ant::BuildFile::Project::FileList|XML::Ant::BuildFile::Project::FileList>
 
 =attr targets
 
-Array reference of target L<XML::Rabbit::Node|XML::Rabbit::Node>s
+Hash reference of
+L<XML::Ant::BuildFile::Project::Target|XML::Ant::BuildFile::Project::Target>s
 from the build file.
+
+=method target_names
+
+Returns a list of the target names from the build file.
+
+=method get_target
+
+Given a target name, return the corresponding
+L<XML::Ant::BuildFile::Project::Target|XML::Ant::BuildFile::Project::Target>
+object.
+
+=method has_target
+
+Given a target name, returns true or false if the target exists.
+
+=method num_targets
+
+Returns a count of the number of targets in the build file.
 
 =cut
 
     has targets => (
         isa         => 'HashRef[XML::Ant::BuildFile::Project::Target]',
-        traits      => ['XPathObjectMap'],
+        traits      => [qw(XPathObjectMap Hash)],
         xpath_query => '/project/target[@name]',
         xpath_key   => './@name',
+        handles     => {
+            target_names => 'keys',
+            get_target   => 'get',
+            has_target   => 'exists',
+            num_targets  => 'count',
+        },
     );
 }
 

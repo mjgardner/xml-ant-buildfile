@@ -10,7 +10,7 @@ XML::Ant::BuildFile::Project - consume Ant build files
 
 =head1 VERSION
 
-version 0.203
+version 0.204
 
 =head1 SYNOPSIS
 

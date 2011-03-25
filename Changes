@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.205     2011-03-25 17:00:33 America/New_York
     new public apply_properties method on projects
     property substution is recursive
     rename Target and FileList classes up a level to XML::Ant::BuildFile::

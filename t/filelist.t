@@ -23,25 +23,29 @@ $project = new_ok(
 
 is( $project->name, 'test', 'project name' );
 cmp_bag(
-    [ keys %{ $project->targets } ],
+    [ $project->target_names ],
     [qw(simple double nested)],
     'target names',
 );
 
-my @filelists = @{ $project->filelists };
-is( scalar @filelists, 3, 'filelists' );
+is( $project->num_filelists(), 3, 'filelists' );
 
 cmp_deeply(
-    [ map { $ARG->id } @filelists ],
+    [ $project->map_filelists( sub { $ARG->id } ) ],
     [ ('filelist') x 3 ],
     'filelist ids',
 );
 
 cmp_deeply(
-    [ map { $ARG->directory->stringify() } @filelists ],
+    [ $project->map_filelists( sub { $ARG->directory->stringify() } ) ],
     [ (q{.}) x 3 ],
     'filelist dirs',
 );
 
-cmp_deeply( [ map { $ARG->stringify() } map { @{ $ARG->files } } @filelists ],
-    [ map {"./$ARG"} qw(a a b a b) ], 'files' );
+cmp_deeply(
+    [   map { $ARG->stringify() }
+            $project->map_filelists( sub { $ARG->files } )
+    ],
+    [ map {"./$ARG"} qw(a a b a b) ],
+    'files'
+);

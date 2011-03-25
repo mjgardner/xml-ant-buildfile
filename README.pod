@@ -42,15 +42,9 @@ by L<XML::Rabbit::Role::Document|XML::Rabbit::Role::Document>.
 
 Name of the Ant project.
 
-=head2 filelists
-
-Array reference of
-L<XML::Ant::BuildFile::FileList|XML::Ant::BuildFile::FileList>s.
-
 =head2 targets
 
-Hash reference of
-L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>s
+Hash of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>s
 from the build file.  The keys are the target names.
 
 =head2 properties
@@ -72,6 +66,42 @@ contains the following predefined properties as per the Ant documentation:
 
 =head1 METHODS
 
+=head2 filelists
+
+Returns an array of all L<filelist|XML::Ant::BuildFile::FileList>s in the
+project.
+
+=head2 filelist
+
+Given an index number returns that C<filelist> from the project.
+You can also use negative numbers to count from the end.
+Returns C<undef> if the specified C<filelist> does not exist.
+
+=head2 map_filelists
+
+Given a code reference, transforms every C<filelist> element into a new
+array.
+
+=head2 filter_filelists
+
+Given a code reference, returns an array with every C<filelist> element
+for which that code returns C<true>.
+
+=head2 find_filelist
+
+Given a code reference, returns the first C<filelist> for which the code
+returns C<true>.
+
+=head2 num_filelists
+
+Returns a count of all C<filelist>s in the project.
+
+=head2 target
+
+Given a list of target names, return the corresponding
+L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
+objects.  In scalar context return only the last target specified.
+
 =head2 all_targets
 
 Returns a list of all targets as
@@ -82,12 +112,6 @@ objects.
 
 Returns a list of the target names from the build file.
 
-=head2 get_target
-
-Given a list of target names, return the corresponding
-L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
-objects.  In scalar context return only the last target specified.
-
 =head2 has_target
 
 Given a target name, returns true or false if the target exists.
@@ -95,6 +119,10 @@ Given a target name, returns true or false if the target exists.
 =head2 num_targets
 
 Returns a count of the number of targets in the build file.
+
+=head2 property
+
+Returns the value for one or more given property names.
 
 =head2 apply_properties
 

@@ -9,10 +9,9 @@ use MooseX::Types::Moose qw(ArrayRef Str);
 use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
+use XML::Ant::BuildFile::Task::Java;
 use namespace::autoclean;
-with
-    'XML::Rabbit::Node' => { -version => '0.0.4' },
-    'XML::Ant::BuildFile::Role::InProject';
+with 'XML::Ant::BuildFile::Role::InProject';
 
 =attr name
 
@@ -49,11 +48,49 @@ has dependencies => ( ro, lazy_build, isa => ArrayRef [__PACKAGE__] );
 sub _build_dependencies {    ## no critic (ProhibitUnusedPrivateSubroutines)
     my $self = shift;
     return if not $self->_has_depends or not $self->_depends;
+    return [ map { $self->project->target($ARG) } split /,/,
+        $self->_depends ];
+}
 
-    return [
-        map { $self->project->get_target($ARG) } split /,/,
-        $self->_depends,
-    ];
+=method all_tasks
+
+Returns an array of task objects contained in this target.
+
+=method task
+
+Given an index number returns that task from the target.
+
+=method filter_tasks
+
+Returns all task objects for which the given code reference returns C<true>.
+
+=method num_tasks
+
+Returns a count of the number of tasks in this target.
+
+=cut
+
+has _tasks => (
+    traits      => [qw(XPathObjectList Array)],
+    xpath_query => './/java',
+    isa_map     => { java => 'XML::Ant::BuildFile::Task::Java' },
+    handles     => {
+        all_tasks    => 'elements',
+        task         => 'get',
+        filter_tasks => 'grep',
+        num_tasks    => 'count',
+    },
+);
+
+=method tasks
+
+Given one or more task names, returns a list of task objects.
+
+=cut
+
+sub tasks {
+    my ( $self, @names ) = @ARG;
+    return $self->filter_tasks( sub { $ARG->task_name ~~ @names } );
 }
 
 __PACKAGE__->meta->make_immutable();

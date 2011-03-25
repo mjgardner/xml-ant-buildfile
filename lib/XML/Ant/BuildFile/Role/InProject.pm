@@ -12,7 +12,7 @@ with 'XML::Rabbit::Node' => { -version => '0.0.4' };
 Reference to the L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project>
 at the root of the build file.
 
-=method properties
+=attr properties
 
 Properties hash reference for the build file.
 

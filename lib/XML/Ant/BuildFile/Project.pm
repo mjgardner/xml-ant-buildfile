@@ -53,24 +53,62 @@ Name of the Ant project.
         default     => sub { {} },
     );
 
-=attr filelists
+=method filelists
 
-Array reference of
-L<XML::Ant::BuildFile::FileList|XML::Ant::BuildFile::FileList>s.
+Returns an array of all L<filelist|XML::Ant::BuildFile::FileList>s in the
+project.
+
+=method filelist
+
+Given an index number returns that C<filelist> from the project.
+You can also use negative numbers to count from the end.
+Returns C<undef> if the specified C<filelist> does not exist.
+
+=method map_filelists
+
+Given a code reference, transforms every C<filelist> element into a new
+array.
+
+=method filter_filelists
+
+Given a code reference, returns an array with every C<filelist> element
+for which that code returns C<true>.
+
+=method find_filelist
+
+Given a code reference, returns the first C<filelist> for which the code
+returns C<true>.
+
+=method num_filelists
+
+Returns a count of all C<filelist>s in the project.
 
 =cut
 
-    has filelists => (
+    has _filelists => (
         isa         => 'ArrayRef[XML::Ant::BuildFile::FileList]',
-        traits      => ['XPathObjectList'],
+        traits      => [qw(XPathObjectList Array)],
         xpath_query => '//filelist[@id]',
+        handles     => {
+            filelists        => 'elements',
+            filelist         => 'get',
+            map_filelists    => 'map',
+            filter_filelists => 'grep',
+            find_filelist    => 'first',
+            num_filelists    => 'count',
+        },
     );
 
 =attr targets
 
-Hash reference of
-L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>s
+Hash of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>s
 from the build file.  The keys are the target names.
+
+=method target
+
+Given a list of target names, return the corresponding
+L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
+objects.  In scalar context return only the last target specified.
 
 =method all_targets
 
@@ -81,12 +119,6 @@ objects.
 =method target_names
 
 Returns a list of the target names from the build file.
-
-=method get_target
-
-Given a list of target names, return the corresponding
-L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
-objects.  In scalar context return only the last target specified.
 
 =method has_target
 
@@ -99,16 +131,17 @@ Returns a count of the number of targets in the build file.
 =cut
 
     has targets => (
+        auto_deref  => 1,
         isa         => 'HashRef[XML::Ant::BuildFile::Target]',
         traits      => [qw(XPathObjectMap Hash)],
         xpath_query => '/project/target[@name]',
         xpath_key   => './@name',
         handles     => {
+            target       => 'get',
+            all_targets  => 'values',
             target_names => 'keys',
-            get_target   => 'get',
             has_target   => 'exists',
             num_targets  => 'count',
-            all_targets  => 'values',
         },
     );
 }
@@ -130,9 +163,19 @@ contains the following predefined properties as per the Ant documentation:
 
 =back
 
+=method property
+
+Returns the value for one or more given property names.
+
 =cut
 
-has properties => ( is => ro, isa => HashRef [Str], default => sub { {} } );
+has properties => (
+    is      => ro,
+    isa     => HashRef [Str],
+    traits  => ['Hash'],
+    default => sub { {} },
+    handles => { property => 'get' },
+);
 
 around properties => sub {
     my ( $orig, $self ) = @ARG;

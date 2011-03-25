@@ -12,9 +12,7 @@ use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class qw(Dir File);
 use namespace::autoclean;
-with
-    'XML::Rabbit::Node' => { -version => '0.0.4' },
-    'XML::Ant::BuildFile::Role::InProject';
+with 'XML::Ant::BuildFile::Role::InProject';
 
 {
 ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
@@ -69,9 +67,22 @@ this file list with all property substitutions applied.
 
 =cut
 
-has files => ( ro, lazy_build, isa => ArrayRef [File], init_arg => undef );
+has _files => ( ro,
+    lazy_build,
+    isa => ArrayRef [File],
+    traits   => ['Array'],
+    init_arg => undef,
+    handles  => {
+        files        => 'elements',
+        map_files    => 'map',
+        filter_files => 'grep',
+        find_file    => 'first',
+        file         => 'get',
+        num_files    => 'count',
+    },
+);
 
-sub _build_files
+sub _build__files
 {    ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
     my $self    = shift;
     my $project = $self->project;

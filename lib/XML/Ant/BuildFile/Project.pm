@@ -56,12 +56,12 @@ Name of the Ant project.
 =attr filelists
 
 Array reference of
-L<XML::Ant::BuildFile::Project::FileList|XML::Ant::BuildFile::Project::FileList>s.
+L<XML::Ant::BuildFile::FileList|XML::Ant::BuildFile::FileList>s.
 
 =cut
 
     has filelists => (
-        isa         => 'ArrayRef[XML::Ant::BuildFile::Project::FileList]',
+        isa         => 'ArrayRef[XML::Ant::BuildFile::FileList]',
         traits      => ['XPathObjectList'],
         xpath_query => '//filelist[@id]',
     );
@@ -69,13 +69,13 @@ L<XML::Ant::BuildFile::Project::FileList|XML::Ant::BuildFile::Project::FileList>
 =attr targets
 
 Hash reference of
-L<XML::Ant::BuildFile::Project::Target|XML::Ant::BuildFile::Project::Target>s
+L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>s
 from the build file.  The keys are the target names.
 
 =method all_targets
 
 Returns a list of all targets as
-L<XML::Ant::BuildFile::Project::Target|XML::Ant::BuildFile::Project::Target>
+L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
 objects.
 
 =method target_names
@@ -85,7 +85,7 @@ Returns a list of the target names from the build file.
 =method get_target
 
 Given a list of target names, return the corresponding
-L<XML::Ant::BuildFile::Project::Target|XML::Ant::BuildFile::Project::Target>
+L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
 objects.  In scalar context return only the last target specified.
 
 =method has_target
@@ -99,7 +99,7 @@ Returns a count of the number of targets in the build file.
 =cut
 
     has targets => (
-        isa         => 'HashRef[XML::Ant::BuildFile::Project::Target]',
+        isa         => 'HashRef[XML::Ant::BuildFile::Target]',
         traits      => [qw(XPathObjectMap Hash)],
         xpath_query => '/project/target[@name]',
         xpath_key   => './@name',

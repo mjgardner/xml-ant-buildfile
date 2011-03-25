@@ -1,4 +1,4 @@
-package XML::Ant::BuildFile::Project::Target;
+package XML::Ant::BuildFile::Target;
 
 # ABSTRACT: target node within an Ant build file
 
@@ -50,7 +50,7 @@ Name of the target.
 =attr
 
 If the target has any dependencies, this will return them as an array reference
-of L<XML::Ant::BuildFile::Project::Target|XML::Ant::BuildFile::Project::Target>
+of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
 objects.
 
 =cut

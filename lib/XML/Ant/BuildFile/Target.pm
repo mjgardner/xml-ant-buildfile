@@ -68,19 +68,33 @@ Returns all task objects for which the given code reference returns C<true>.
 
 Returns a count of the number of tasks in this target.
 
+=method BUILD
+
+Automatically run after object construction to set up task object support.
+
 =cut
 
-has _tasks => (
-    traits      => [qw(XPathObjectList Array)],
-    xpath_query => './/java',
-    isa_map     => { java => 'XML::Ant::BuildFile::Task::Java' },
-    handles     => {
-        all_tasks    => 'elements',
-        task         => 'get',
-        filter_tasks => 'grep',
-        num_tasks    => 'count',
-    },
-);
+sub BUILD {
+    my $self = shift;
+
+    ## no critic (ValuesAndExpressions::ProhibitMagicNumbers)
+    my %isa_map = map { lc( ( split /::/ => $ARG )[-1] ) => $ARG }
+        $self->project->task_plugins;
+    $self->meta->add_attribute(
+        _tasks => (
+            traits      => [qw(XPathObjectList Array)],
+            xpath_query => join( q{|} => map {".//$ARG"} keys %isa_map ),
+            isa_map     => \%isa_map,
+            handles     => {
+                all_tasks    => 'elements',
+                task         => 'get',
+                filter_tasks => 'grep',
+                num_tasks    => 'count',
+            },
+        )
+    );
+    return;
+}
 
 =method tasks
 
@@ -93,7 +107,6 @@ sub tasks {
     return $self->filter_tasks( sub { $ARG->task_name ~~ @names } );
 }
 
-__PACKAGE__->meta->make_immutable();
 1;
 
 __END__

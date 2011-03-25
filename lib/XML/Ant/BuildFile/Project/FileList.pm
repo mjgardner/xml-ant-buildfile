@@ -73,7 +73,9 @@ element's C<dir> attribute with all property substitutions applied.
 has directory => ( ro, required, lazy,
     isa      => Dir,
     init_arg => undef,
-    default  => sub { dir( $ARG[0]->_property_subst( $ARG[0]->_dir_attr ) ) },
+    default  => sub {
+        dir( $ARG[0]->project->apply_properties( $ARG[0]->_dir_attr ) );
+    },
 );
 
 =attr files
@@ -87,7 +89,8 @@ has files => ( ro, lazy_build, isa => ArrayRef [File], init_arg => undef );
 
 sub _build_files
 {    ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
-    my $self = shift;
+    my $self    = shift;
+    my $project = $self->project;
     my @file_names;
 
     if ( defined $self->_file_names ) {
@@ -97,17 +100,9 @@ sub _build_files
         push @file_names, split / [,\s]* /, $self->_files_attr_names;
     }
 
-    return [ map { $self->directory->file( $self->_property_subst($ARG) ) }
+    return [
+        map { $self->directory->file( $project->apply_properties($ARG) ) }
             @file_names ];
-}
-
-sub _property_subst {
-    my ( $self, $source ) = @ARG;
-    my %properties = %{ $self->properties };
-    while ( my ( $property, $value ) = each %properties ) {
-        $source =~ s/ \$ {$property} /$value/g;
-    }
-    return $source;
 }
 
 __PACKAGE__->meta->make_immutable();

@@ -155,8 +155,11 @@ Takes a string and applies L<property|/properties> substitution to it.
 sub apply_properties {
     my ( $self, $source ) = @ARG;
     my %properties = %{ $self->properties };
-    while ( my ( $property, $value ) = each %properties ) {
-        $source =~ s/ \$ {$property} /$value/g;
+
+    while ( $source =~ / \$ { [\w.]+ } / ) {
+        while ( my ( $property, $value ) = each %properties ) {
+            $source =~ s/ \$ {$property} /$value/g;
+        }
     }
     return $source;
 }

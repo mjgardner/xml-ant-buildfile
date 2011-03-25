@@ -10,20 +10,9 @@ use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
 use namespace::autoclean;
-with 'XML::Rabbit::Node' => { -version => '0.0.4' };
-
-=attr project
-
-Reference to the L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project>
-at the root of the build file containing this target.
-
-=cut
-
-has project => (
-    isa         => 'XML::Ant::BuildFile::Project',
-    traits      => ['XPathObject'],
-    xpath_query => q{/},
-);
+with
+    'XML::Rabbit::Node' => { -version => '0.0.4' },
+    'XML::Ant::BuildFile::Role::InProject';
 
 =attr name
 
@@ -47,7 +36,7 @@ Name of the target.
     );
 }
 
-=attr
+=attr dependencies
 
 If the target has any dependencies, this will return them as an array reference
 of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>

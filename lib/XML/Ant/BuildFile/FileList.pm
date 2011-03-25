@@ -12,25 +12,9 @@ use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class qw(Dir File);
 use namespace::autoclean;
-with 'XML::Rabbit::Node' => { -version => '0.0.4' };
-
-=attr project
-
-Reference to the L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project>
-at the root of the build file containing this file list.
-
-=method properties
-
-Properties hash reference for the build file.
-
-=cut
-
-has project => (
-    isa         => 'XML::Ant::BuildFile::Project',
-    traits      => ['XPathObject'],
-    xpath_query => q{/},
-    handles     => ['properties'],
-);
+with
+    'XML::Rabbit::Node' => { -version => '0.0.4' },
+    'XML::Ant::BuildFile::Role::InProject';
 
 {
 ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)

@@ -228,4 +228,5 @@ __END__
 =head1 DESCRIPTION
 
 This class uses L<XML::Rabbit|XML::Rabbit> to consume Ant build files using
-a L<Moose|Moose> object-oriented interface.
+a L<Moose|Moose> object-oriented interface.  It is a work in progress and in no
+way a complete implementation of all Ant syntax.

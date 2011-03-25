@@ -15,7 +15,7 @@ above_version = 5.010
 above_version = 5.010
 
 [Documentation::PodSpelling]
-stop_words = filelists os basedir bugtracker classname filelist
+stop_words = filelists os basedir bugtracker classname filelist args arg
 
 [Documentation::RequirePodSections]
 lib_sections = NAME | VERSION | SYNOPSIS | DESCRIPTION | BUGS | AUTHOR | COPYRIGHT AND LICENSE

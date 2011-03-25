@@ -2,7 +2,7 @@
     new public apply_properties method on projects
     property substution is recursive
     rename Target and FileList classes up a level to XML::Ant::BuildFile::
-    added XML::Ant::BuildFile::Task::Java
+    added XML::Ant::BuildFile::Task::Java and limited argument parsing
     lots of new helper methods for files, filelists, properties, targets, tasks
     targets, filelists, files automatically dereference
 0.204     2011-03-24 16:16:11 America/New_York

@@ -4,14 +4,12 @@ package XML::Ant::BuildFile::Task::Java;
 
 use Carp;
 use English '-no_match_vars';
+use Modern::Perl;
 use Moose;
 use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw(ArrayRef Str);
 use MooseX::Types::Path::Class 'File';
 use Path::Class;
-use Regexp::DefaultFlags;
-## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
-## no critic (RequireLineBoundaryMatching)
 use namespace::autoclean;
 with 'XML::Ant::BuildFile::Task';
 
@@ -52,74 +50,14 @@ has jar => ( ro, lazy,
 
 Returns a list of all arguments passed to the Java class.
 
-=method arg
-
-Given one or more index numbers, returns a list of those positional arguments.
-
-=method arg_line
-
-Returns a string of all the arguments joined together, separated by spaces.
-
-=method map_args
-
-Returns a list of arguments transformed by the given code reference.
-
-=method filter_args
-
-Returns a list of arguments for which the given code reference returns C<true>.
-
-=method find_arg
-
-Returns the first argument for which the given code reference returns C<true>.
-
-=method num_args
-
-Returns a count of all arguments.  Note that space-separated arguments such
-as those produced by C<< <java args="..."/> >> and C<< <arg line="..."/> >>
-will be split apart and count as separate arguments.
-
 =cut
 
-has _args_ref => ( ro,
-    isa => ArrayRef [Str],
-    traits      => [qw(XPathValueList Array)],
-    xpath_query => './arg',
-    handles     => { _all_args => 'elements', _filter_args => 'map' },
-);
-
 has _args => ( ro,
-    lazy_build,
-    isa => ArrayRef [Str],
-    traits  => ['Array'],
-    handles => {
-        args        => 'elements',
-        arg         => 'get',
-        arg_line    => [ join => q{ } ],
-        map_args    => 'map',
-        filter_args => 'grep',
-        find_arg    => 'first',
-        num_args    => 'count',
-    },
+    isa         => 'ArrayRef[XML::Ant::BuildFile::Element::Arg]',
+    traits      => [qw(XPathObjectList Array)],
+    xpath_query => './arg',
+    handles     => { args => [ map => sub { $ARG->args } ] },
 );
-
-sub _build_args { ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
-    my $self = shift;
-
-    my @nested_args = $self->_filter_args(
-        sub {
-            given ( shift->node ) {
-                when ( $ARG->hasAttribute('value') ) {
-                    return $ARG->getAttribute('value');
-                }
-                when ( $ARG->hasAttribute('line') ) {
-                    return split / \s /, $ARG->getAttribute('line');
-                }
-            }
-        }
-    );
-
-    return [ split( / \s /, $self->_args_attr ), @nested_args ];
-}
 
 __PACKAGE__->meta->make_immutable();
 1;

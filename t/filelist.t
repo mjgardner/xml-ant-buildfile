@@ -4,7 +4,6 @@ use Test::Most tests => 8;
 use English '-no_match_vars';
 use Readonly;
 use Path::Class;
-use XML::Ant::BuildFile::Project;
 
 our $CLASS;
 

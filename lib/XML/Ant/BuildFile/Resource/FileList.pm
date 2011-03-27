@@ -1,4 +1,4 @@
-package XML::Ant::BuildFile::FileList;
+package XML::Ant::BuildFile::Resource::FileList;
 
 # ABSTRACT: file list node within an Ant build file
 

@@ -9,7 +9,6 @@ use MooseX::Types::Moose qw(ArrayRef Maybe Str);
 use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
-use namespace::autoclean;
 with 'XML::Ant::BuildFile::Role::InProject';
 
 =attr id

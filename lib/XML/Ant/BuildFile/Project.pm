@@ -8,14 +8,6 @@ use Moose::Util::TypeConstraints;
 use MooseX::Has::Sugar::Minimal;
 use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class 'File';
-use Module::Pluggable (
-    sub_name    => 'task_plugins',
-    search_path => 'XML::Ant::BuildFile::Task',
-);
-use Module::Pluggable (
-    sub_name    => 'resource_plugins',
-    search_path => 'XML::Ant::BuildFile::Resource',
-);
 use Path::Class;
 use Readonly;
 use Regexp::DefaultFlags;

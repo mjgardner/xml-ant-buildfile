@@ -8,10 +8,8 @@ use MooseX::Types::Moose 'Str';
 use MooseX::Has::Sugar;
 use MooseX::Types::Path::Class 'File';
 use Path::Class;
-use Regexp::DefaultFlags;
-## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
-## no critic (RequireLineBoundaryMatching)
 use namespace::autoclean;
+extends 'XML::Ant::BuildFile::ResourceContainer';
 with 'XML::Ant::BuildFile::Task';
 
 has _to_file =>
@@ -35,46 +33,6 @@ has to_file => ( ro, lazy,
     ,
 );
 
-=method BUILD
-
-Automatically run after object construction to set up task object support.
-
-=cut
-
-sub BUILD {
-    my $self = shift;
-
-    ## no critic (ValuesAndExpressions::ProhibitMagicNumbers)
-    my %isa_map = map { lc( ( split /::/ => $ARG )[-1] ) => $ARG }
-        $self->project->resource_plugins;
-    $self->meta->add_attribute(
-        _tasks => (
-            traits      => [qw(XPathObjectList Array)],
-            xpath_query => join( q{|} => map {".//$ARG"} keys %isa_map ),
-            isa_map     => \%isa_map,
-            handles     => {
-                all_resources    => 'elements',
-                resource         => 'get',
-                filter_resources => 'grep',
-                num_resources    => 'count',
-            },
-        )
-    );
-    return;
-}
-
-=method resources
-
-Given one or more resource type names, returns a list of objects.
-
-=cut
-
-sub resources {
-    my ( $self, @names ) = @ARG;
-    return $self->filter_resources( sub { $ARG->resource_name ~~ @names } );
-}
-
-__PACKAGE__->meta->make_immutable();
 1;
 
 __END__

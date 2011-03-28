@@ -13,6 +13,7 @@ use Regexp::DefaultFlags;
 ## no critic (RequireLineBoundaryMatching)
 use namespace::autoclean;
 extends 'XML::Ant::BuildFile::Element::PatternSet';
+with 'XML::Ant::BuildFile::Resource';
 
 =method includes
 

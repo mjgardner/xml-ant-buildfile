@@ -9,6 +9,7 @@ use MooseX::Types::Moose qw(ArrayRef Maybe Str);
 use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
+use namespace::autoclean;
 with 'XML::Ant::BuildFile::Role::InProject';
 
 =attr id
@@ -52,7 +53,7 @@ has _includes => ( ro, lazy_build,
     handles => { includes => 'elements' },
 );
 
-sub _build_includes
+sub _build__includes
 {    ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
     my $self = shift;
     my @includes;

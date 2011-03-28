@@ -67,7 +67,7 @@ sub _build__files
     $self->dir->recurse(
         callback => sub {
             my $path = shift;
-            next if $path->is_dir;
+            return if $path->is_dir;
             if ( !@patterns ) { push @files, $path; return }
             for my $pattern (@patterns) {
                 if ( $path->stringify() =~ $pattern ) {

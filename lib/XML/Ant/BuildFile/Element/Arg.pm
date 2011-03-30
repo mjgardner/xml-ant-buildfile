@@ -1,5 +1,7 @@
 package XML::Ant::BuildFile::Element::Arg;
 
+# ABSTRACT: Argument element for a task in an Ant build file
+
 use Moose;
 use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw(ArrayRef Maybe Str);

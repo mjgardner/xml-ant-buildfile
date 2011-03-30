@@ -12,7 +12,7 @@ use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class qw(Dir File);
 use namespace::autoclean;
-with 'XML::Ant::BuildFile::Role::InProject';
+with 'XML::Ant::BuildFile::Resource';
 
 {
 ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)

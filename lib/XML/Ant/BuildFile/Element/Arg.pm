@@ -43,8 +43,8 @@ has _args => ( ro, lazy_build,
 sub _build__args
 {    ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
     my $self = shift;
-    return [ $self->_value ] if defined $self->_value;
-    return [ split / \s /, $self->_line ] if defined $self->_line;
+    return [ $self->_value ] if $self->_value;
+    return [ split / \s /, $self->_line ] if $self->_line;
     return [];
 }
 

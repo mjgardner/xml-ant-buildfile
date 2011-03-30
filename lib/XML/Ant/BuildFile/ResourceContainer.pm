@@ -22,7 +22,7 @@ sub BUILD {
 
     ## no critic (ValuesAndExpressions::ProhibitMagicNumbers)
     my %isa_map = map { lc( ( split /::/ => $ARG )[-1] ) => $ARG }
-        $self->project->resource_plugins;
+        $self->resource_plugins;
     $self->meta->add_attribute(
         _tasks => (
             traits      => [qw(XPathObjectList Array)],

@@ -98,6 +98,22 @@ Returns a count of all C<filelist>s in the project.
         },
     );
 
+=method paths
+
+Given a list of one or more C<id> strings, returns a list of
+L<XML::Ant::BuildFile::Element::Path|XML::Ant::BuildFile::Element::Path>s
+for C<< <classpath/> >>s and C<< <path/> >>s in the project.
+
+=cut
+
+    has _paths => (
+        isa         => 'HashRef[XML::Ant::BuildFile::Element::Path]',
+        traits      => [qw(XPathObjectMap Hash)],
+        xpath_query => '//classpath[@id]|//path[@id]',
+        xpath_key   => './@id',
+        handles     => { paths => 'get' },
+    );
+
 =attr targets
 
 Hash of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>s

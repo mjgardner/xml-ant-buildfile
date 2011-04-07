@@ -97,6 +97,12 @@ returns C<true>.
 
 Returns a count of all C<filelist>s in the project.
 
+=head2 paths
+
+Given a list of one or more C<id> strings, returns a list of
+L<XML::Ant::BuildFile::Element::Path|XML::Ant::BuildFile::Element::Path>s
+for C<< <classpath/> >>s and C<< <path/> >>s in the project.
+
 =head2 target
 
 Given a list of target names, return the corresponding

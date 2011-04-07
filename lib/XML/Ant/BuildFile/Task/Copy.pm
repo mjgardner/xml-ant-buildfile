@@ -34,5 +34,3 @@ has to_file => ( ro, lazy,
 );
 
 1;
-
-__END__

@@ -12,26 +12,25 @@ use namespace::autoclean;
 extends 'XML::Ant::BuildFile::ResourceContainer';
 with 'XML::Ant::BuildFile::Resource';
 
-has _elements => (
-    isa         => ArrayRef,
-    traits      => ['XPathValueList'],
-    xpath_query => join(
-        q{|} => map { ( "./\@$ARG", "./pathelement/\@$ARG" ) }
-            qw(path location),
-    ),
-);
-
-has _collections => (
-    isa    => 'ArrayRef[XML::Ant::BuildFile::Resource]',
-    traits => ['XPathObjectList'],
-    xpath_query =>
-        join( q{|} => map {"./$ARG"} qw(filelist path fileset dirset) ),
-);
-
 has _location => (
     isa         => Str,
     traits      => ['XPathValue'],
     xpath_query => './@location',
 );
+
+has paths => ( ro, lazy_build, isa => ArrayRef [ Dir | File ] );
+
+sub _build_paths {
+    my $self = shift;
+    my @paths;
+
+    if ( $self->_location ) {
+        push @paths,
+            file( $self->project->apply_properties( $self->_location ) );
+    }
+    push @paths, map { $ARG->files } $self->resources('filelist');
+
+    return \@paths;
+}
 
 1;

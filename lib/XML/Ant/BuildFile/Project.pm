@@ -118,7 +118,7 @@ for C<< <classpath/> >>s and C<< <path/> >>s in the project.
         traits      => [qw(XPathObjectMap Hash)],
         xpath_query => '//classpath[@id]|//path[@id]',
         xpath_key   => './@id',
-        handles     => { path => 'get' },
+        handles     => { path => 'get', path_pairs => 'kv' },
     );
 
 =attr targets

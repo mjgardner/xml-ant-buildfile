@@ -24,7 +24,7 @@ sub BUILD {
     my %isa_map = map { lc( ( split /::/ => $ARG )[-1] ) => $ARG }
         $self->resource_plugins;
     $self->meta->add_attribute(
-        _tasks => (
+        _resources => (
             traits      => [qw(XPathObjectList Array)],
             xpath_query => join( q{|} => map {".//$ARG"} keys %isa_map ),
             isa_map     => \%isa_map,

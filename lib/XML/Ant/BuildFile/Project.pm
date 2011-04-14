@@ -98,7 +98,13 @@ Returns a count of all C<filelist>s in the project.
         },
     );
 
-=method paths
+=attr paths
+
+Hash of
+L<XML::Ant::BuildFile::Element::Path|XML::Ant::BuildFile::Element::Path>s
+from the build file.  The keys are the path C<id>s.
+
+=method path
 
 Given a list of one or more C<id> strings, returns a list of
 L<XML::Ant::BuildFile::Element::Path|XML::Ant::BuildFile::Element::Path>s
@@ -106,12 +112,13 @@ for C<< <classpath/> >>s and C<< <path/> >>s in the project.
 
 =cut
 
-    has _paths => (
-        isa         => 'HashRef[XML::Ant::BuildFile::Element::Path]',
+    has paths => (
+        auto_deref  => 1,
+        isa         => 'HashRef[XML::Ant::BuildFile::Resource::Path]',
         traits      => [qw(XPathObjectMap Hash)],
         xpath_query => '//classpath[@id]|//path[@id]',
         xpath_key   => './@id',
-        handles     => { paths => 'get' },
+        handles     => { path => 'get' },
     );
 
 =attr targets

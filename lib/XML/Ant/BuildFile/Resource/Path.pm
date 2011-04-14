@@ -13,6 +13,7 @@ extends 'XML::Ant::BuildFile::ResourceContainer';
 with 'XML::Ant::BuildFile::Resource';
 
 has _location => (
+    ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
     isa         => Str,
     traits      => ['XPathValue'],
     xpath_query => './@location',
@@ -24,7 +25,7 @@ has _paths => ( ro, lazy_build,
     handles => { all => 'elements' },
 );
 
-sub _build__paths {
+sub _build__paths {    ## no critic (ProhibitUnusedPrivateSubroutines)
     my $self = shift;
     my @paths;
 

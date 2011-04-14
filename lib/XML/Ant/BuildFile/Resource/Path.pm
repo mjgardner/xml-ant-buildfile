@@ -18,9 +18,13 @@ has _location => (
     xpath_query => './@location',
 );
 
-has paths => ( ro, lazy_build, isa => ArrayRef [ Dir | File ] );
+has _paths => ( ro, lazy_build,
+    isa => ArrayRef [ Dir | File ],
+    traits  => ['Array'],
+    handles => { all => 'elements' },
+);
 
-sub _build_paths {
+sub _build__paths {
     my $self = shift;
     my @paths;
 

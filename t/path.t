@@ -18,8 +18,7 @@ cmp_bag(
 
 cmp_deeply(
     [   map {
-            [ $ARG->[0] =>
-                    [ map { $ARG->stringify() } @{ $ARG->[1]->paths } ] ]
+            [ $ARG->[0] => [ map {"$ARG"} $ARG->[1]->all ] ]
             } $project->path_pairs,
     ],
     bag([ 'site.css.concat' => ['target/yui/concat/site.css'] ],

@@ -10,6 +10,7 @@ use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw(ArrayRef Str);
 use MooseX::Types::Path::Class 'File';
 use Path::Class;
+use XML::Ant::Properties;
 use namespace::autoclean;
 with 'XML::Ant::BuildFile::Task';
 
@@ -41,9 +42,8 @@ A L<Path::Class::File|Path::Class::File> for the jar file being executed.
 =cut
 
 has jar => ( ro, lazy,
-    isa => File,
-    default =>
-        sub { file( $ARG[0]->project->apply_properties( $ARG[0]->_jar ) ) },
+    isa     => File,
+    default => sub { file( XML::Ant::Properties->apply( $ARG[0]->_jar ) ) },
 );
 
 =method args

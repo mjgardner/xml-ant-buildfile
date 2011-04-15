@@ -37,7 +37,7 @@ cmp_deeply(
 
 cmp_deeply(
     [ $project->map_filelists( sub { $ARG->directory->stringify() } ) ],
-    [ (q{.}) x 3 ],
+    [ (q{t}) x 3 ],
     'filelist dirs',
 );
 
@@ -45,6 +45,6 @@ cmp_deeply(
     [   map { $ARG->stringify() }
             $project->map_filelists( sub { $ARG->files } )
     ],
-    [ map {"./$ARG"} qw(a a b a b) ],
+    [ map {"t/$ARG"} qw(a a b a b) ],
     'files'
 );

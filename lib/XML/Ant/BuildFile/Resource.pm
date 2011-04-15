@@ -10,6 +10,14 @@ use MooseX::Types::Moose 'Str';
 use namespace::autoclean;
 with 'XML::Ant::BuildFile::Role::InProject';
 
+=attr as_string
+
+Every role consumer must implement the C<as_string> method.
+
+=cut
+
+requires 'as_string';
+
 =attr resource_name
 
 Name of the task's XML node.
@@ -21,6 +29,36 @@ has resource_name => ( ro, lazy,
     init_arg => undef,
     default  => sub { $ARG[0]->node->nodeName },
 );
+
+=attr id
+
+C<id> attribute of this resource.
+
+=cut
+
+{
+## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+    has id =>
+        ( ro, isa => Str, traits => ['XPathValue'], xpath_query => './@id' );
+}
+
+=method BUILD
+
+After a resource is constructed, it adds its L<id|/id> and
+L<string representation|/as_string> to the
+L<XML::Ant::Properties|XML::Ant::Properties> singleton with C<toString:>
+prepended to the C<id>.
+
+=cut
+
+sub BUILD {
+    my $self = shift;
+    if ( $self->id ) {
+        XML::Ant::Properties->set(
+            'toString:' . $self->id => $self->as_string );
+    }
+    return;
+}
 
 1;
 

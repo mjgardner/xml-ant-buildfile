@@ -2,6 +2,7 @@ package XML::Ant::BuildFile::Resource::FileList;
 
 # ABSTRACT: file list node within an Ant build file
 
+use Modern::Perl;
 use English '-no_match_vars';
 use Path::Class;
 use Regexp::DefaultFlags;
@@ -11,39 +12,8 @@ use Moose;
 use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class qw(Dir File);
+use XML::Ant::Properties;
 use namespace::autoclean;
-with 'XML::Ant::BuildFile::Resource';
-
-{
-## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
-
-=attr id
-
-C<id> attribute of this file list.
-
-=cut
-
-    my %xpath_attr = ( _dir_attr => './@dir', id => './@id' );
-    while ( my ( $attr, $xpath ) = each %xpath_attr ) {
-        has $attr => ( ro, required,
-            isa         => Str,
-            traits      => ['XPathValue'],
-            xpath_query => $xpath,
-        );
-    }
-
-    has _file_names => ( ro,
-        isa => ArrayRef [Str],
-        traits      => ['XPathValueList'],
-        xpath_query => './file/@name',
-    );
-
-    has _files_attr_names => ( ro,
-        isa         => Str,
-        traits      => ['XPathValue'],
-        xpath_query => './@files',
-    );
-}
 
 =attr directory
 
@@ -52,17 +22,23 @@ element's C<dir> attribute with all property substitutions applied.
 
 =cut
 
-has directory => ( ro, required, lazy,
-    isa      => Dir,
-    init_arg => undef,
-    default  => sub {
-        dir( $ARG[0]->project->apply_properties( $ARG[0]->_dir_attr ) );
-    },
-);
+has directory => ( ro, required, lazy_build, isa => Dir, init_arg => undef );
 
-=attr files
+sub _build_directory {    ## no critic (ProhibitUnusedPrivateSubroutines)
+    my $self      = shift;
+    my $directory = $self->_dir_attr;
 
-Reference to an array of L<Path::Class::File|Path::Class::File>s within
+    if ( not state $recursion_guard) {
+        $recursion_guard = 1;
+        $directory       = XML::Ant::Properties->apply($directory);
+        undef $recursion_guard;
+    }
+    return dir($directory);
+}
+
+=method files
+
+Returns an array of L<Path::Class::File|Path::Class::File>s within
 this file list with all property substitutions applied.
 
 =cut
@@ -79,13 +55,13 @@ has _files => ( ro,
         find_file    => 'first',
         file         => 'get',
         num_files    => 'count',
+        as_string    => [ join => q{ } ],
     },
 );
 
 sub _build__files
 {    ## no critic (Subroutines::ProhibitUnusedPrivateSubroutines)
-    my $self    = shift;
-    my $project = $self->project;
+    my $self = shift;
     my @file_names;
 
     if ( defined $self->_file_names ) {
@@ -95,9 +71,44 @@ sub _build__files
         push @file_names, split / [,\s]* /, $self->_files_attr_names;
     }
 
-    return [
-        map { $self->directory->file( $project->apply_properties($ARG) ) }
-            @file_names ];
+    if ( not state $recursion_guard) {
+        $recursion_guard = 1;
+        @file_names = map { XML::Ant::Properties->apply($ARG) } @file_names;
+        undef $recursion_guard;
+    }
+
+    return [ map { $self->_prepend_dir($ARG) } @file_names ];
+}
+
+sub _prepend_dir {
+    my ( $self, $file_name ) = @ARG;
+    return $self->directory->subsumes( file($file_name) )
+        ? file($file_name)
+        : $self->directory->file($file_name);
+}
+
+with 'XML::Ant::BuildFile::Resource';
+
+{
+## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+
+    has _dir_attr => ( ro, required,
+        isa         => Str,
+        traits      => ['XPathValue'],
+        xpath_query => './@dir',
+    );
+
+    has _file_names => ( ro,
+        isa => ArrayRef [Str],
+        traits      => ['XPathValueList'],
+        xpath_query => './file/@name',
+    );
+
+    has _files_attr_names => ( ro,
+        isa         => Str,
+        traits      => ['XPathValue'],
+        xpath_query => './@files',
+    );
 }
 
 __PACKAGE__->meta->make_immutable();

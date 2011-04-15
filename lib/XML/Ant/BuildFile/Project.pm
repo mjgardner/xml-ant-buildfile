@@ -10,9 +10,7 @@ use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class 'File';
 use Path::Class;
 use Readonly;
-use Regexp::DefaultFlags;
-## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
-## no critic (RequireLineBoundaryMatching)
+extends 'XML::Ant::BuildFile::ResourceContainer';
 with 'XML::Rabbit::RootNode';
 
 =attr file
@@ -168,10 +166,12 @@ Returns a count of the number of targets in the build file.
     );
 }
 
-=attr properties
+=method BUILD
 
-Read-only hash reference to properties set by the build file.  This also
-contains the following predefined properties as per the Ant documentation:
+After construction, the app-wide L<XML::Ant::Properties|XML::Ant::Properties>
+singleton stores any C<< <property/> >> name/value pairs set by the build file.
+It also contains the following predefined properties as per the Ant
+documentation:
 
 =over
 
@@ -185,51 +185,21 @@ contains the following predefined properties as per the Ant documentation:
 
 =back
 
-=method property
-
-Returns the value for one or more given property names.
-
 =cut
 
-has properties => (
-    is      => ro,
-    isa     => HashRef [Str],
-    traits  => ['Hash'],
-    default => sub { {} },
-    handles => { property => 'get' },
-);
+sub BUILD {
+    my $self = shift;
 
-around properties => sub {
-    my ( $orig, $self ) = @ARG;
-    return {
+    XML::Ant::Properties->set(
         'os.name'          => $OSNAME,
         'basedir'          => file( $self->_file )->dir->stringify(),
         'ant.file'         => $self->_file,
         'ant.project.name' => $self->name,
         %{ $self->_properties },
-        %{ $self->$orig() },
-    };
-};
-
-=method apply_properties
-
-Takes a string and applies L<property|/properties> substitution to it.
-
-=cut
-
-sub apply_properties {
-    my ( $self, $source ) = @ARG;
-    my %properties = %{ $self->properties };
-
-    while ( $source =~ / \$ { [\w.]+ } / ) {
-        while ( my ( $property, $value ) = each %properties ) {
-            $source =~ s/ \$ {$property} /$value/g;
-        }
-    }
-    return $source;
+    );
+    return;
 }
 
-__PACKAGE__->meta->make_immutable();
 1;
 
 __END__

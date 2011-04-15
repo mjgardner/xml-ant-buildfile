@@ -54,23 +54,6 @@ from the build file.  The keys are the path C<id>s.
 Hash of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>s
 from the build file.  The keys are the target names.
 
-=head2 properties
-
-Read-only hash reference to properties set by the build file.  This also
-contains the following predefined properties as per the Ant documentation:
-
-=over
-
-=item os.name
-
-=item basedir
-
-=item ant.file
-
-=item ant.project.name
-
-=back
-
 =head1 METHODS
 
 =head2 filelists
@@ -133,13 +116,24 @@ Given a target name, returns true or false if the target exists.
 
 Returns a count of the number of targets in the build file.
 
-=head2 property
+=head2 BUILD
 
-Returns the value for one or more given property names.
+After construction, the app-wide L<XML::Ant::Properties|XML::Ant::Properties>
+singleton stores any C<< <property/> >> name/value pairs set by the build file.
+It also contains the following predefined properties as per the Ant
+documentation:
 
-=head2 apply_properties
+=over
 
-Takes a string and applies L<property|/properties> substitution to it.
+=item os.name
+
+=item basedir
+
+=item ant.file
+
+=item ant.project.name
+
+=back
 
 =head1 BUGS
 

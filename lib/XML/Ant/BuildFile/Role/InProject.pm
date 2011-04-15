@@ -12,17 +12,12 @@ with 'XML::Rabbit::Node' => { -version => '0.0.4' };
 Reference to the L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project>
 at the root of the build file.
 
-=attr properties
-
-Properties hash reference for the build file.
-
 =cut
 
 has project => (
     isa         => 'XML::Ant::BuildFile::Project',
     traits      => ['XPathObject'],
     xpath_query => q{/},
-    handles     => ['properties'],
 );
 
 1;

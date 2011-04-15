@@ -1,5 +1,7 @@
 package XML::Ant::BuildFile::ResourceContainer;
 
+# ABSTRACT: Container for XML::Ant::BuildFile::Resource plugins
+
 use English '-no_match_vars';
 use Moose;
 use Module::Pluggable (

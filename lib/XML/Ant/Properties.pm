@@ -6,7 +6,7 @@ use strict;
 use English '-no_match_vars';
 use MooseX::Singleton;
 use MooseX::Has::Sugar;
-use MooseX::Types::Moose qw(HashRef Str);
+use MooseX::Types::Moose qw(HashRef Maybe Str);
 use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
@@ -33,7 +33,7 @@ use namespace::autoclean;
 =cut
 
 has _properties => ( rw,
-    isa => HashRef [Str],
+    isa => HashRef [ Maybe [Str] ],
     init_arg => undef,
     traits   => ['Hash'],
     default  => sub { {} },
@@ -61,7 +61,9 @@ Takes a string and applies property substitution to it.
 =cut
 
 sub apply {
-    my ( $self, $source ) = @ARG;
+    my $self = shift;
+    my $source = shift or return;
+
     my %property = %{ $self->_properties };
     while ( $source =~ / \$ { [\w:.]+ } / ) {
         my $old_source = $source;

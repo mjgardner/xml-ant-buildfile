@@ -33,9 +33,11 @@ sub apply {
     my ( $self, $source ) = @ARG;
     my %properties = %{ $self->_properties };
     while ( $source =~ / \$ { [\w:.]+ } / ) {
+        my $old_source = $source;
         while ( my ( $property, $value ) = each %properties ) {
             $source =~ s/ \$ {$property} /$value/g;
         }
+        last if $old_source eq $source;
     }
     return $source;
 }

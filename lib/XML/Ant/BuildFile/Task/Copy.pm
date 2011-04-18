@@ -34,3 +34,22 @@ has to_file => ( ro, lazy,
 );
 
 1;
+
+__END__
+
+=head1 SYNOPSIS
+
+    package My::Ant;
+    use Moose;
+    with 'XML::Rabbit::Node';
+
+    has paths => (
+        isa         => 'ArrayRef[XML::Ant::BuildFile::Task::Copy]',
+        traits      => 'XPathObjectList',
+        xpath_query => './/copy',
+    );
+
+=head1 DESCRIPTION
+
+This is a L<Moose|Moose> type class meant for use with
+L<XML::Rabbit|XML::Rabbit> when processing copy tasks in an Ant build file.

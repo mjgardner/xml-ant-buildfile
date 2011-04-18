@@ -16,6 +16,12 @@ use XML::Ant::Properties;
 use namespace::autoclean;
 extends 'XML::Ant::BuildFile::ResourceContainer';
 
+=method all
+
+=method as_string
+
+=cut
+
 has _paths => ( ro,
     lazy_build,
     isa => ArrayRef [ Dir | File ],
@@ -53,3 +59,24 @@ has _location => (
 );
 
 1;
+
+__END__
+
+=head1 SYNOPSIS
+
+    package My::Ant;
+    use Moose;
+    with 'XML::Rabbit::RootNode';
+
+    has paths => (
+        isa         => 'HashRef[XML::Ant::BuildFile::Resource::Path]',
+        traits      => 'XPathObjectMap',
+        xpath_query => '//classpath[@id]|//path[@id]',
+        xpath_key   => './@id',
+    );
+
+=head1 DESCRIPTION
+
+This is a L<Moose|Moose> type class meant for use with
+L<XML::Rabbit|XML::Rabbit> when processing path-like structures in an Ant
+build file.

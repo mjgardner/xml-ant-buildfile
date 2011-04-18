@@ -53,3 +53,16 @@ sub resources {
 }
 
 1;
+
+__END__
+
+=head1 SYNOPSIS
+
+    package XML::Ant::BuildFile::Resource::Foo;
+    use Moose;
+    extends 'XML::Ant::BuildFile::ResourceContainer';
+
+=head1 DESCRIPTION
+
+Base class for containers of multiple
+L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> plugins.

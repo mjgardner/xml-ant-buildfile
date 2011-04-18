@@ -12,6 +12,26 @@ use Regexp::DefaultFlags;
 ## no critic (RequireLineBoundaryMatching)
 use namespace::autoclean;
 
+=method count
+
+=method get
+
+=method set
+
+=method delete
+
+=method exists
+
+=method defined
+
+=method keys
+
+=method values
+
+=method clear
+
+=cut
+
 has _properties => ( rw,
     isa => HashRef [Str],
     init_arg => undef,
@@ -55,3 +75,18 @@ sub apply {
 
 __PACKAGE__->meta->make_immutable();
 1;
+
+__END__
+
+=head1 SYNOPSIS
+
+    use XML::Ant::Properties;
+    XML::Ant::Properties->set(foo => 'fooprop', bar => 'barprop');
+    my $fooprop = XML::Ant::Properties->apply('${foo}');
+
+=head1 DESCRIPTION
+
+This is a singleton class for storing and applying properties while processing
+an Ant build file.  When properties are set their values are also subject to
+repeated Ant-style C<${name}> expansion.  You can also perform expansion with
+the L<apply|/apply> method.

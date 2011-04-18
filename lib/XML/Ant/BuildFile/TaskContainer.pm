@@ -69,3 +69,16 @@ sub tasks {
 }
 
 1;
+
+__END__
+
+=head1 SYNOPSIS
+
+    package XML::Ant::BuildFile::Task::Foo;
+    use Moose;
+    extends 'XML::Ant::BuildFile::TaskContainer';
+
+=head1 DESCRIPTION
+
+Base class for containers of multiple
+L<XML::Ant::BuildFile::Task|XML::Ant::BuildFile::Task> plugins.

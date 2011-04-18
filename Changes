@@ -1,4 +1,6 @@
 {{$NEXT}}
+
+0.206     2011-04-18 12:47:30 America/New_York
     better property and resource name substitution
     processing <java/> task arguments and <path/> structures
     new plugin system for XML::Ant::BuildFile::Resource and ::Task

@@ -10,6 +10,9 @@ use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class 'File';
 use Path::Class;
 use Readonly;
+use Regexp::DefaultFlags;
+## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
+## no critic (RequireLineBoundaryMatching)
 extends 'XML::Ant::BuildFile::ResourceContainer';
 with 'XML::Rabbit::RootNode';
 
@@ -52,8 +55,8 @@ Name of the Ant project.
 
 =method filelists
 
-Returns an array of all L<filelist|XML::Ant::BuildFile::FileList>s in the
-project.
+Returns an array of all L<filelist|XML::Ant::BuildFile::Resource::FileList>s
+in the project.
 
 =method filelist
 
@@ -99,13 +102,13 @@ Returns a count of all C<filelist>s in the project.
 =attr paths
 
 Hash of
-L<XML::Ant::BuildFile::Element::Path|XML::Ant::BuildFile::Element::Path>s
+L<XML::Ant::BuildFile::Resource::Path|XML::Ant::BuildFile::Resource::Path>s
 from the build file.  The keys are the path C<id>s.
 
 =method path
 
 Given a list of one or more C<id> strings, returns a list of
-L<XML::Ant::BuildFile::Element::Path|XML::Ant::BuildFile::Element::Path>s
+L<XML::Ant::BuildFile::Resource::Path|XML::Ant::BuildFile::Resource::Path>s
 for C<< <classpath/> >>s and C<< <path/> >>s in the project.
 
 =cut
@@ -169,7 +172,9 @@ Returns a count of the number of targets in the build file.
 =method BUILD
 
 After construction, the app-wide L<XML::Ant::Properties|XML::Ant::Properties>
-singleton stores any C<< <property/> >> name/value pairs set by the build file.
+singleton stores any C<< <property/> >> name/value pairs set by the build file,
+as well as any resource string expansions handled by
+L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> plugins.
 It also contains the following predefined properties as per the Ant
 documentation:
 
@@ -197,6 +202,16 @@ sub BUILD {
         'ant.project.name' => $self->name,
         %{ $self->_properties },
     );
+
+    for my $attr ( $self->meta->get_all_attributes() ) {
+        next if !$attr->has_type_constraint;
+        if ( $attr->type_constraint->name
+            =~ /XML::Ant::BuildFile::Resource::/ )
+        {
+            my $attr_name  = $attr->name;
+            my $dummy_attr = $self->$attr_name;
+        }
+    }
     return;
 }
 

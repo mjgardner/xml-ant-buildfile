@@ -46,7 +46,7 @@ Name of the Ant project.
 =head2 paths
 
 Hash of
-L<XML::Ant::BuildFile::Element::Path|XML::Ant::BuildFile::Element::Path>s
+L<XML::Ant::BuildFile::Resource::Path|XML::Ant::BuildFile::Resource::Path>s
 from the build file.  The keys are the path C<id>s.
 
 =head2 targets
@@ -58,8 +58,8 @@ from the build file.  The keys are the target names.
 
 =head2 filelists
 
-Returns an array of all L<filelist|XML::Ant::BuildFile::FileList>s in the
-project.
+Returns an array of all L<filelist|XML::Ant::BuildFile::Resource::FileList>s
+in the project.
 
 =head2 filelist
 
@@ -89,7 +89,7 @@ Returns a count of all C<filelist>s in the project.
 =head2 path
 
 Given a list of one or more C<id> strings, returns a list of
-L<XML::Ant::BuildFile::Element::Path|XML::Ant::BuildFile::Element::Path>s
+L<XML::Ant::BuildFile::Resource::Path|XML::Ant::BuildFile::Resource::Path>s
 for C<< <classpath/> >>s and C<< <path/> >>s in the project.
 
 =head2 target
@@ -119,7 +119,9 @@ Returns a count of the number of targets in the build file.
 =head2 BUILD
 
 After construction, the app-wide L<XML::Ant::Properties|XML::Ant::Properties>
-singleton stores any C<< <property/> >> name/value pairs set by the build file.
+singleton stores any C<< <property/> >> name/value pairs set by the build file,
+as well as any resource string expansions handled by
+L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> plugins.
 It also contains the following predefined properties as per the Ant
 documentation:
 

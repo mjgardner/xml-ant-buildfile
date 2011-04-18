@@ -23,6 +23,17 @@ has _properties => ( rw,
     },
 );
 
+around set => sub {
+    my ( $orig, $self ) = splice @ARG, 0, 2;
+    my %element  = @ARG;
+    my %property = %{ $self->_properties };
+    while ( my ( $key, $value ) = each %element ) {
+        $property{$key} = $self->apply($value);
+    }
+    $self->_properties( \%property );
+    return $self->$orig(%element);
+};
+
 =method apply
 
 Takes a string and applies property substitution to it.
@@ -31,10 +42,10 @@ Takes a string and applies property substitution to it.
 
 sub apply {
     my ( $self, $source ) = @ARG;
-    my %properties = %{ $self->_properties };
+    my %property = %{ $self->_properties };
     while ( $source =~ / \$ { [\w:.]+ } / ) {
         my $old_source = $source;
-        while ( my ( $property, $value ) = each %properties ) {
+        while ( my ( $property, $value ) = each %property ) {
             $source =~ s/ \$ {$property} /$value/g;
         }
         last if $old_source eq $source;

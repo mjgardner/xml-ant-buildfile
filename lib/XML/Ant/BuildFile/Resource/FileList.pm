@@ -87,6 +87,9 @@ sub _prepend_dir {
         : $self->directory->file($file_name);
 }
 
+has content =>
+    ( ro, lazy, isa => ArrayRef [File], default => sub { $ARG[0]->_files } );
+
 with 'XML::Ant::BuildFile::Resource';
 
 {

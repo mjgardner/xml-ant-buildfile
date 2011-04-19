@@ -1,6 +1,6 @@
-package XML::Ant::BuildFile::Task::Copy;
+package XML::Ant::BuildFile::Task::Concat;
 
-# ABSTRACT: copy task node in an Ant build file
+# ABSTRACT: concat task node in an Ant build file
 
 use English '-no_match_vars';
 use Moose;
@@ -13,24 +13,25 @@ use namespace::autoclean;
 extends 'XML::Ant::BuildFile::ResourceContainer';
 with 'XML::Ant::BuildFile::Task';
 
-has _to_file =>
+has _destfile =>
     ( ro,
     ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
     isa         => Str,
     traits      => ['XPathValue'],
-    xpath_query => './@tofile',
+    xpath_query => './@destfile',
     );
 
-=attr to_file
+=attr destfile
 
-The file to copy to as a L<Path::Class::File|Path::Class::File> object.
+The file to concatenate into as a L<Path::Class::File|Path::Class::File>
+object.
 
 =cut
 
-has to_file => ( ro, lazy,
+has destfile => ( ro, lazy,
     isa => File,
     default =>
-        sub { dir( XML::Ant::Properties->apply( $ARG[0]->_to_file ) ) },
+        sub { file( XML::Ant::Properties->apply( $ARG[0]->_destfile ) ) },
 );
 
 1;
@@ -44,13 +45,13 @@ __END__
     with 'XML::Rabbit::Node';
 
     has paths => (
-        isa         => 'ArrayRef[XML::Ant::BuildFile::Task::Copy]',
+        isa         => 'ArrayRef[XML::Ant::BuildFile::Task::Concat]',
         traits      => 'XPathObjectList',
-        xpath_query => './/copy',
+        xpath_query => './/concat',
     );
 
 =head1 DESCRIPTION
 
 This is a L<Moose|Moose> type class meant for use with
-L<XML::Rabbit|XML::Rabbit> when processing C<< <copy/> >> tasks in an Ant
+L<XML::Rabbit|XML::Rabbit> when processing C<< <concat/> >> tasks in an Ant
 build file.

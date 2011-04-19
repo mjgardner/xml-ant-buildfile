@@ -6,17 +6,9 @@ use strict;
 use English '-no_match_vars';
 use Moose::Role;
 use MooseX::Has::Sugar;
-use MooseX::Types::Moose 'Str';
+use MooseX::Types::Moose qw(Maybe Str);
 use namespace::autoclean;
 with 'XML::Ant::BuildFile::Role::InProject';
-
-=attr as_string
-
-Every role consumer must implement the C<as_string> method.
-
-=cut
-
-requires 'as_string';
 
 =attr resource_name
 
@@ -34,13 +26,59 @@ has resource_name => ( ro, lazy,
 
 C<id> attribute of this resource.
 
+=attr as_string
+
+Every role consumer must implement the C<as_string> method.
+
+=attr content
+
+L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> provides a
+default C<content> attribute, but it only returns C<undef>.  Consumers should
+use the C<around> method modifier to return something else in order to
+support resources with C<refid> attributes
+
 =cut
+
+requires qw(as_string content);
+
+around as_string => sub {
+    my ( $orig, $self ) = splice @ARG, 0, 2;
+    return $self->$orig(@ARG) if !$self->_refid;
+
+    my $antecedent = $self->project->find_resource(
+        sub {
+            $ARG->resource_name eq $self->resource_name
+                and $ARG->id eq $self->_refid;
+        }
+    );
+    return $antecedent->as_string;
+};
 
 {
 ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
     has id =>
         ( ro, isa => Str, traits => ['XPathValue'], xpath_query => './@id' );
+    has _refid => ( ro,
+        isa         => Str,
+        traits      => ['XPathValue'],
+        xpath_query => './@refid',
+    );
 }
+
+has content => ( ro, lazy_build, isa => Maybe );
+
+around content => sub {
+    my ( $orig, $self ) = splice @ARG, 0, 2;
+    return $self->$orig(@ARG) if !$self->_refid;
+
+    my $antecedent = $self->project->find_resource(
+        sub {
+            $ARG->resource_name eq $self->resource_name
+                and $ARG->id eq $self->_refid;
+        }
+    );
+    return $antecedent->content;
+};
 
 =method BUILD
 

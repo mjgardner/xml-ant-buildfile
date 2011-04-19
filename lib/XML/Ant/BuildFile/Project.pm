@@ -195,13 +195,22 @@ documentation:
 sub BUILD {
     my $self = shift;
 
-    XML::Ant::Properties->set(
+    my %ant_property = (
         'os.name'          => $OSNAME,
         'basedir'          => file( $self->_file )->dir->stringify(),
         'ant.file'         => $self->_file,
         'ant.project.name' => $self->name,
-        %{ $self->_properties },
     );
+    for my $property (
+        grep { not XML::Ant::Properties->exists($ARG) }
+        keys %ant_property
+        )
+    {
+        XML::Ant::Properties->set( $property => $ant_property{$property} );
+    }
+    if ( keys %{ $self->_properties } ) {
+        XML::Ant::Properties->set( %{ $self->_properties } );
+    }
 
     for my $attr ( $self->meta->get_all_attributes() ) {
         next if !$attr->has_type_constraint;

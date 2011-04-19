@@ -34,6 +34,7 @@ sub BUILD {
                 all_resources    => 'elements',
                 resource         => 'get',
                 filter_resources => 'grep',
+                find_resource    => 'first',
                 num_resources    => 'count',
             },
         )

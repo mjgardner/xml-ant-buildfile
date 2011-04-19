@@ -1,5 +1,7 @@
 {{$NEXT}}
-
+    added TaskContainer::find_task and ResourceContainer::map_resources
+    delegated methods
+    support <copy todir=""/> attribute
 0.210     2011-04-19 15:02:08 America/New_York
     support <concat/> tasks and refid attributes in resources
     fix bug when default Ant properties are overridden with subsequent

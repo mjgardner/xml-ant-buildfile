@@ -8,6 +8,7 @@ use MooseX::Types::Moose qw(ArrayRef Maybe Str);
 use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
+use XML::Ant::Properties;
 use namespace::autoclean;
 with 'XML::Rabbit::Node';
 
@@ -30,6 +31,8 @@ handles C<< <arg/> >> elements with the following attributes:
 
 =item line
 
+=item pathref
+
 =back
 
 =cut
@@ -45,6 +48,9 @@ sub _build__args
     my $self = shift;
     return [ $self->_value ] if $self->_value;
     return [ split / \s /, $self->_line ] if $self->_line;
+    return [
+        XML::Ant::Properties->apply( '${toString:' . $self->_pathref . '}' ) ]
+        if $self->_pathref;
     return [];
 }
 

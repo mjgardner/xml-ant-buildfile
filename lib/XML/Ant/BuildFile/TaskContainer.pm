@@ -50,6 +50,7 @@ sub BUILD {
                 all_tasks    => 'elements',
                 task         => 'get',
                 filter_tasks => 'grep',
+                find_task    => 'first',
                 num_tasks    => 'count',
             },
         )

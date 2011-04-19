@@ -33,6 +33,7 @@ sub BUILD {
             handles     => {
                 all_resources    => 'elements',
                 resource         => 'get',
+                map_resources    => 'map',
                 filter_resources => 'grep',
                 find_resource    => 'first',
                 num_resources    => 'count',

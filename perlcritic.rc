@@ -1,6 +1,6 @@
 severity = brutal
 verbose = 8
-exclude = Documentation::RequirePodAtEnd Editor::RequireEmacsFileVariables Miscellanea::RequireRcsKeywords Modules::RequireExplicitInclusion Modules::RequireExplicitPackage Modules::RequirePerlVersion
+exclude = BuiltinFunctions::ProhibitStringyEval Documentation::RequirePodAtEnd Editor::RequireEmacsFileVariables Miscellanea::RequireRcsKeywords Modules::RequireExplicitInclusion Modules::RequireExplicitPackage Modules::RequirePerlVersion
 
 [Lax::RequireExplicitPackage::ExceptForPragmata]
 allowed_pragmata = diagnostics feature perlversion strict warnings utf8

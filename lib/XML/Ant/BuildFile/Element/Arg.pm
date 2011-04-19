@@ -48,9 +48,15 @@ sub _build__args
     my $self = shift;
     return [ $self->_value ] if $self->_value;
     return [ split / \s /, $self->_line ] if $self->_line;
-    return [
-        XML::Ant::Properties->apply( '${toString:' . $self->_pathref . '}' ) ]
-        if $self->_pathref;
+    {
+        ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+        return [
+            XML::Ant::Properties->apply(
+                '${toString:' . $self->_pathref . '}'
+            )
+            ]
+            if $self->_pathref;
+    }
     return [];
 }
 

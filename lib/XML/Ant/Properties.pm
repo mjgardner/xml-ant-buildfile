@@ -30,8 +30,6 @@ use namespace::autoclean;
 
 =method clear
 
-=method kv
-
 =cut
 
 has _properties => ( rw,
@@ -41,7 +39,7 @@ has _properties => ( rw,
     default  => sub { {} },
     handles  => {
         map { $ARG => $ARG }
-            qw(count get set delete exists defined keys values clear kv),
+            qw(count get set delete exists defined keys values clear),
     },
 );
 

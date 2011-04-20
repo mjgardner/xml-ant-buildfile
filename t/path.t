@@ -21,14 +21,20 @@ cmp_bag(
 );
 
 cmp_deeply(
-    [   map {
-            [ $ARG->[0] => [ map {"$ARG"} $ARG->[1]->all ] ]
-            } $project->path_pairs,
-    ],
-    bag([ 'site.css.concat' => ['t/target/yui/concat/site.css'] ],
-        [ 'site.js.concat'  => ['t/target/yui/concat/site.js'] ],
-        [ 'site.css.min'    => ['t/target/yui/mincat/css/min/site.css'] ],
-        [ 'site.js.min'     => ['t/target/yui/mincat/js/min/site.js'] ],
-    ),
+    {   map {
+            $ARG->[0] => map {"$ARG"}
+                $ARG->[1]->as_string
+            } $project->path_pairs
+    },
+    {   'site.css.concat' => target_yui('concat/site.css'),
+        'site.js.concat'  => target_yui('concat/site.js'),
+        'site.css.min'    => target_yui('mincat/css/min/site.css'),
+        'site.js.min'     => target_yui('mincat/js/min/site.js'),
+    },
     'path location pairs',
 );
+
+sub target_yui {
+    return Path::Class::File->new_foreign( 'Unix', 't/target/yui', @ARG )
+        ->stringify();
+}

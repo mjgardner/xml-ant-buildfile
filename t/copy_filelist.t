@@ -2,6 +2,7 @@
 
 use Test::Most tests => 4;
 use English '-no_match_vars';
+use Path::Class;
 use XML::Ant::BuildFile::Project;
 
 my $project = XML::Ant::BuildFile::Project->new( file => 't/yui-build.xml' );
@@ -21,8 +22,11 @@ isa_ok(
 );
 cmp_bag(
     [ $filelist->map_files( sub {"$ARG"} ) ],
-    [   qw(t/target/yui/mincat/css/min/site.css
-            t/target/yui/mincat/js/min/site.js),
-    ],
+    [ map { target_mincat($ARG) } qw(css/min/site.css js/min/site.js) ],
     'names in file list',
 );
+
+sub target_mincat {
+    return Path::Class::File->new_foreign( 'Unix', 't/target/yui/mincat',
+        @ARG )->stringify();
+}

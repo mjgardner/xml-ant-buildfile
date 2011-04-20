@@ -45,6 +45,6 @@ cmp_deeply(
     [   map { $ARG->stringify() }
             $project->map_filelists( sub { $ARG->files } )
     ],
-    [ map {"t/$ARG"} qw(a a b a b) ],
+    [ map { file( 't', $ARG )->stringify() } qw(a a b a b) ],
     'files'
 );

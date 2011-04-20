@@ -1,6 +1,6 @@
 severity = brutal
 verbose = 8
-exclude = BuiltinFunctions::ProhibitStringyEval Documentation::RequirePodAtEnd Editor::RequireEmacsFileVariables Miscellanea::RequireRcsKeywords Modules::RequireExplicitInclusion Modules::RequireExplicitPackage Modules::RequirePerlVersion
+exclude = BuiltinFunctions::ProhibitStringyEval Documentation::RequirePodAtEnd Editor::RequireEmacsFileVariables Miscellanea::RequireRcsKeywords Modules::RequireExplicitInclusion Modules::RequireExplicitPackage Modules::RequirePerlVersion Tics::ProhibitLongLines
 
 [Lax::RequireExplicitPackage::ExceptForPragmata]
 allowed_pragmata = diagnostics feature perlversion strict warnings utf8
@@ -18,11 +18,11 @@ above_version = 5.010
 above_version = 5.010
 
 [Documentation::PodSpelling]
-stop_words = filelists os basedir bugtracker classname filelist args arg dir plugins prepended pathref concat destfile kv
+stop_words = filelists os basedir bugtracker classname filelist args arg dir plugins prepended pathref concat destfile kv Perldoc perldoc CPAN's
 
 [Documentation::RequirePodSections]
-lib_sections = NAME | VERSION | SYNOPSIS | DESCRIPTION | BUGS | AUTHOR | COPYRIGHT AND LICENSE
-script_sections = NAME | USAGE | DESCRIPTION | CONFIGURATION | BUGS | AUTHOR | COPYRIGHT AND LICENSE
+lib_sections = NAME | VERSION | SYNOPSIS | DESCRIPTION | SUPPORT | AUTHOR | COPYRIGHT AND LICENSE
+script_sections = NAME | USAGE | DESCRIPTION | CONFIGURATION | SUPPORT | AUTHOR | COPYRIGHT AND LICENSE
 
 [InputOutput::RequireCheckedSyscalls]
 functions = :builtins

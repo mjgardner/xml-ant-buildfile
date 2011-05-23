@@ -18,7 +18,7 @@ above_version = 5.010
 above_version = 5.010
 
 [Documentation::PodSpelling]
-stop_words = filelists os basedir bugtracker classname filelist args arg dir plugins prepended pathref concat destfile kv Perldoc perldoc CPAN's
+stop_words = filelists os basedir bugtracker classname filelist args arg dir plugins prepended pathref concat destfile kv Perldoc perldoc CPAN's annonations PASSed
 
 [Documentation::RequirePodSections]
 lib_sections = NAME | VERSION | SYNOPSIS | DESCRIPTION | SUPPORT | AUTHOR | COPYRIGHT AND LICENSE

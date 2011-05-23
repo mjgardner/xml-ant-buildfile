@@ -35,6 +35,4 @@ cmp_deeply(
     'concat',
 ) or explain \%concat_hash;
 
-sub unix_filestr_to_native {
-    return Path::Class::File->new_foreign( 'Unix', $ARG[0] )->stringify();
-}
+sub unix_filestr_to_native { file( split q{/}, $ARG[0] )->stringify() }

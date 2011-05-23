@@ -22,11 +22,10 @@ isa_ok(
 );
 cmp_bag(
     [ $filelist->map_files( sub {"$ARG"} ) ],
-    [ map { target_mincat($ARG) } qw(css/min/site.css js/min/site.js) ],
+    [   map { unix_filestr_to_native("t/target/yui/mincat/$ARG") }
+            qw(css/min/site.css js/min/site.js),
+    ],
     'names in file list',
 );
 
-sub target_mincat {
-    return Path::Class::File->new_foreign( 'Unix', 't/target/yui/mincat',
-        @ARG )->stringify();
-}
+sub unix_filestr_to_native { file( split q{/}, $ARG[0] )->stringify() }

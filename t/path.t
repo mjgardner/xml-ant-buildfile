@@ -34,7 +34,6 @@ cmp_deeply(
     'path location pairs',
 );
 
-sub target_yui {
-    return Path::Class::File->new_foreign( 'Unix', 't/target/yui', @ARG )
-        ->stringify();
-}
+sub target_yui { unix_filestr_to_native("t/target/yui/$ARG[0]") }
+
+sub unix_filestr_to_native { file( split q{/}, $ARG[0] )->stringify() }

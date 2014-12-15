@@ -12,28 +12,6 @@ use Regexp::DefaultFlags;
 ## no critic (RequireLineBoundaryMatching)
 use namespace::autoclean;
 
-=method count
-
-=method get
-
-=method set
-
-=method delete
-
-=method exists
-
-=method defined
-
-=method keys
-
-=method values
-
-=method clear
-
-=method kv
-
-=cut
-
 has _properties => ( rw,
     isa => HashRef [ Maybe [Str] ],
     init_arg => undef,
@@ -56,12 +34,6 @@ around set => sub {
     return $self->$orig(%element);
 };
 
-=method apply
-
-Takes a string and applies property substitution to it.
-
-=cut
-
 sub apply {
     my $self = shift;
     my $source = shift or return;
@@ -77,7 +49,6 @@ sub apply {
     return $source;
 }
 
-__PACKAGE__->meta->make_immutable();
 1;
 
 __END__
@@ -94,3 +65,27 @@ This is a singleton class for storing and applying properties while processing
 an Ant build file.  When properties are set their values are also subject to
 repeated Ant-style C<${name}> expansion.  You can also perform expansion with
 the L<apply|/apply> method.
+
+=method count
+
+=method get
+
+=method set
+
+=method delete
+
+=method exists
+
+=method defined
+
+=method keys
+
+=method values
+
+=method clear
+
+=method kv
+
+=method apply
+
+Takes a string and applies property substitution to it.

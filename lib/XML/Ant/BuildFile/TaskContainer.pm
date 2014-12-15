@@ -42,12 +42,11 @@ sub tasks {
     my ( $self, @names ) = @ARG;
     return $self->filter_tasks(
         sub {
-            any { $_ eq $ARG->task_name } @names;
+            my $task = $_;
+            any { $_ eq $task->task_name } @names;
         },
     );
 }
-
-__PACKAGE__->meta->make_immutable();
 
 no Moose;
 

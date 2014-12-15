@@ -15,13 +15,6 @@ use MooseX::Types::Path::Class qw(Dir File);
 use XML::Ant::Properties;
 use namespace::autoclean;
 
-=attr directory
-
-L<Path::Class::Dir|Path::Class::Dir> indicated by the C<< <filelist> >>
-element's C<dir> attribute with all property substitutions applied.
-
-=cut
-
 has directory => ( ro, required, lazy_build, isa => Dir, init_arg => undef );
 
 sub _build_directory {    ## no critic (ProhibitUnusedPrivateSubroutines)
@@ -35,13 +28,6 @@ sub _build_directory {    ## no critic (ProhibitUnusedPrivateSubroutines)
     }
     return dir($directory);
 }
-
-=method files
-
-Returns an array of L<Path::Class::File|Path::Class::File>s within
-this file list with all property substitutions applied.
-
-=cut
 
 has _files => ( ro,
     lazy_build,
@@ -114,8 +100,6 @@ with 'XML::Ant::BuildFile::Resource';
     );
 }
 
-__PACKAGE__->meta->make_immutable();
-
 no Moose;
 
 1;
@@ -137,3 +121,13 @@ __END__
 
 See L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project> for a complete
 description.
+
+=attr directory
+
+L<Path::Class::Dir|Path::Class::Dir> indicated by the C<< <filelist> >>
+element's C<dir> attribute with all property substitutions applied.
+
+=method files
+
+Returns an array of L<Path::Class::File|Path::Class::File>s within
+this file list with all property substitutions applied.

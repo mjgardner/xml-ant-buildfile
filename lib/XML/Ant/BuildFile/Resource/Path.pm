@@ -16,12 +16,6 @@ use XML::Ant::Properties;
 use namespace::autoclean;
 extends 'XML::Ant::BuildFile::ResourceContainer';
 
-=method all
-
-=method as_string
-
-=cut
-
 has _paths => ( ro,
     lazy_build,
     isa => ArrayRef [ Dir | File ],    ## no critic (ProhibitBitwiseOperators)
@@ -63,8 +57,6 @@ has _location => (
     xpath_query => './@location',
 );
 
-__PACKAGE__->meta->make_immutable();
-
 no Moose;
 
 1;
@@ -89,3 +81,7 @@ __END__
 This is a L<Moose|Moose> type class meant for use with
 L<XML::Rabbit|XML::Rabbit> when processing path-like structures in an Ant
 build file.
+
+=method all
+
+=method as_string

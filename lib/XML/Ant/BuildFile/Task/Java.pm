@@ -14,12 +14,6 @@ use XML::Ant::Properties;
 use namespace::autoclean;
 with 'XML::Ant::BuildFile::Task';
 
-=attr classname
-
-A string representing the Java class that's executed.
-
-=cut
-
 my %xpath_attr = (
     ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
     classname  => './@classname',
@@ -35,22 +29,10 @@ while ( my ( $attr, $xpath ) = each %xpath_attr ) {
     );
 }
 
-=attr jar
-
-A L<Path::Class::File|Path::Class::File> for the jar file being executed.
-
-=cut
-
 has jar => ( ro, lazy,
     isa     => File,
     default => sub { file( XML::Ant::Properties->apply( $ARG[0]->_jar ) ) },
 );
-
-=method args
-
-Returns a list of all arguments passed to the Java class.
-
-=cut
 
 has _args => ( ro,
     isa         => 'ArrayRef[XML::Ant::BuildFile::Element::Arg]',
@@ -58,8 +40,6 @@ has _args => ( ro,
     xpath_query => './arg',
     handles     => { args => [ map => sub { $ARG->args } ] },
 );
-
-__PACKAGE__->meta->make_immutable();
 
 no Moose;
 
@@ -81,3 +61,15 @@ __END__
 
 This is an incomplete class for Ant Java tasks in a
 L<build file project|XML::Ant::BuildFile::Project>.
+
+=attr classname
+
+A string representing the Java class that's executed.
+
+=attr jar
+
+A L<Path::Class::File|Path::Class::File> for the jar file being executed.
+
+=method args
+
+Returns a list of all arguments passed to the Java class.

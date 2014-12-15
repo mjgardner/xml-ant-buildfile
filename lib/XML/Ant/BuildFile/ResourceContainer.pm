@@ -43,12 +43,11 @@ sub resources {
     my ( $self, @names ) = @ARG;
     return $self->filter_resources(
         sub {
-            any { $_ eq $ARG->resource_name } @names;
+            my $resource = $_;
+            any { $_ eq $resource->resource_name } @names;
         },
     );
 }
-
-__PACKAGE__->meta->make_immutable();
 
 no Moose;
 

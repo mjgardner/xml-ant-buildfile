@@ -31,7 +31,7 @@ __END__
 
 =pod
 
-=encoding utf8
+=encoding UTF-8
 
 =for :stopwords Mark Gardner GSI Commerce cpan testmatrix url annocpan anno bugtracker rt
 cpants kwalitee diff irc mailto metadata placeholders metacpan

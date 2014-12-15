@@ -23,6 +23,7 @@ name: XML-Ant-BuildFile
 requires:
   Carp: '0'
   English: '0'
+  List::Util: '1.33'
   Modern::Perl: '0'
   Module::Pluggable: '0'
   Moose: '0'

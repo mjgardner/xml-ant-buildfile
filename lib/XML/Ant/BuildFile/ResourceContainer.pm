@@ -15,6 +15,7 @@ $XML::Ant::BuildFile::ResourceContainer::VERSION = '0.216';
 # ABSTRACT: Container for XML::Ant::BuildFile::Resource plugins
 
 use English '-no_match_vars';
+use List::Util 1.33 'any';
 use Moose;
 use Module::Pluggable (
     sub_name    => 'resource_plugins',
@@ -51,7 +52,11 @@ sub BUILD {
 
 sub resources {
     my ( $self, @names ) = @ARG;
-    return $self->filter_resources( sub { $ARG->resource_name ~~ @names } );
+    return $self->filter_resources(
+        sub {
+            any { $_ eq $ARG->resource_name } @names;
+        }
+    );
 }
 
 1;

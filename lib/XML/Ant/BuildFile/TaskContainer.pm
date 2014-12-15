@@ -15,6 +15,7 @@ $XML::Ant::BuildFile::TaskContainer::VERSION = '0.216';
 # ABSTRACT: Container for XML::Ant::BuildFile::Task plugins
 
 use English '-no_match_vars';
+use List::Util 1.33 'any';
 use Moose;
 use Module::Pluggable (
     sub_name    => 'task_plugins',
@@ -50,7 +51,11 @@ sub BUILD {
 
 sub tasks {
     my ( $self, @names ) = @ARG;
-    return $self->filter_tasks( sub { $ARG->task_name ~~ @names } );
+    return $self->filter_tasks(
+        sub {
+            any { $_ eq $ARG->task_name } @names;
+        }
+    );
 }
 
 1;

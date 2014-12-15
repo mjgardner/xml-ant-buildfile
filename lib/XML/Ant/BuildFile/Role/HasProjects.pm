@@ -17,6 +17,7 @@ $XML::Ant::BuildFile::Role::HasProjects::VERSION = '0.216';
 use strict;
 use Carp;
 use English '-no_match_vars';
+use List::Util 1.33 'any';
 use Moose::Role;
 use MooseX::Has::Sugar;
 use MooseX::Types::Moose 'HashRef';
@@ -65,7 +66,9 @@ sub _make_ant_finder_callback {
         for ( 0 .. $#dir_list ) {    # skip symlinks
             return if -l file( @dir_list[ 0 .. $ARG ] )->stringify();
         }
-        return if 'CVS' ~~ @dir_list or '.svn' ~~ @dir_list;   # skip SCM dirs
+        return
+            if any { $_ eq 'CVS' } @dir_list
+            or any { $_ eq '.svn' } @dir_list;    # skip SCM dirs
 
         # look for matching XML files but only carp if parse error
         my $error;

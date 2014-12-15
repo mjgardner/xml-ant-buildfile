@@ -43,6 +43,8 @@ for my $attr (qw(dir file)) {
     );
 }
 
+__PACKAGE__->meta->make_immutable();
+
 no Moose;
 
 1;

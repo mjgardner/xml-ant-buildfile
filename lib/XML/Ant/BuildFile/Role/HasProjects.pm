@@ -17,6 +17,7 @@ $XML::Ant::BuildFile::Role::HasProjects::VERSION = '0.216';
 use strict;
 use Carp;
 use English '-no_match_vars';
+## no critic (Subroutines::ProhibitCallsToUndeclaredSubs)
 use List::Util 1.33 'any';
 use Moose::Role;
 use MooseX::Has::Sugar;

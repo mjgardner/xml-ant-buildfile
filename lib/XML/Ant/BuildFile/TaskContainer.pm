@@ -15,6 +15,7 @@ $XML::Ant::BuildFile::TaskContainer::VERSION = '0.216';
 # ABSTRACT: Container for XML::Ant::BuildFile::Task plugins
 
 use English '-no_match_vars';
+## no critic (Subroutines::ProhibitCallsToUndeclaredSubs)
 use List::Util 1.33 'any';
 use Moose;
 use Module::Pluggable (

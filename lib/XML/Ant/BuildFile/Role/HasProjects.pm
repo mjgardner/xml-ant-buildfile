@@ -66,9 +66,9 @@ sub _make_ant_finder_callback {
         for ( 0 .. $#dir_list ) {    # skip symlinks
             return if -l file( @dir_list[ 0 .. $ARG ] )->stringify();
         }
-        return
-            if any { $_ eq 'CVS' } @dir_list
-            or any { $_ eq '.svn' } @dir_list;    # skip SCM dirs
+        return                       # skip SCM dirs
+            if any { 'CVS' eq $_ } @dir_list
+            or any { '.svn' eq $_ } @dir_list;
 
         # look for matching XML files but only carp if parse error
         my $error;

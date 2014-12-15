@@ -69,8 +69,6 @@ has _location => (
     xpath_query => './@location',
 );
 
-__PACKAGE__->meta->make_immutable();
-
 no Moose;
 
 1;

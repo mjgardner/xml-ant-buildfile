@@ -122,8 +122,6 @@ sub BUILD {
     return;
 }
 
-__PACKAGE__->meta->make_immutable();
-
 no Moose::Util::TypeConstraints;
 no Moose;
 

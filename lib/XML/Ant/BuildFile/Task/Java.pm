@@ -53,8 +53,6 @@ has _args => ( ro,
     handles     => { args => [ map => sub { $ARG->args } ] },
 );
 
-__PACKAGE__->meta->make_immutable();
-
 no Moose;
 
 1;

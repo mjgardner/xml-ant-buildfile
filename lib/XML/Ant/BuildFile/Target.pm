@@ -50,8 +50,6 @@ sub _build_dependencies {    ## no critic (ProhibitUnusedPrivateSubroutines)
         $self->_depends ];
 }
 
-__PACKAGE__->meta->make_immutable();
-
 no Moose;
 
 1;

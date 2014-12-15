@@ -10,34 +10,11 @@ use MooseX::Types::Moose qw(Maybe Str);
 use namespace::autoclean;
 with 'XML::Ant::BuildFile::Role::InProject';
 
-=attr resource_name
-
-Name of the task's XML node.
-
-=cut
-
 has resource_name => ( ro, lazy,
     isa      => Str,
     init_arg => undef,
     default  => sub { $ARG[0]->node->nodeName },
 );
-
-=attr id
-
-C<id> attribute of this resource.
-
-=attr as_string
-
-Every role consumer must implement the C<as_string> method.
-
-=attr content
-
-L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> provides a
-default C<content> attribute, but it only returns C<undef>.  Consumers should
-use the C<around> method modifier to return something else in order to
-support resources with C<refid> attributes
-
-=cut
 
 requires qw(as_string content);
 
@@ -49,7 +26,7 @@ around as_string => sub {
         sub {
             $ARG->resource_name eq $self->resource_name
                 and $ARG->id eq $self->_refid;
-        }
+        },
     );
     return $antecedent->as_string;
 };
@@ -75,19 +52,10 @@ around content => sub {
         sub {
             $ARG->resource_name eq $self->resource_name
                 and $ARG->id eq $self->_refid;
-        }
+        },
     );
     return $antecedent->content;
 };
-
-=method BUILD
-
-After a resource is constructed, it adds its L<id|/id> and
-L<string representation|/as_string> to the
-L<XML::Ant::Properties|XML::Ant::Properties> singleton with C<toString:>
-prepended to the C<id>.
-
-=cut
 
 sub BUILD {
     my $self = shift;
@@ -97,6 +65,8 @@ sub BUILD {
     }
     return;
 }
+
+no Moose::Role;
 
 1;
 
@@ -119,3 +89,29 @@ __END__
 
 This is a role shared by resources in an
 L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project>.
+
+=attr resource_name
+
+Name of the task's XML node.
+
+=attr id
+
+C<id> attribute of this resource.
+
+=attr as_string
+
+Every role consumer must implement the C<as_string> method.
+
+=attr content
+
+C<XML::Ant::BuildFile::Resource> provides a
+default C<content> attribute, but it only returns C<undef>.  Consumers should
+use the C<around> method modifier to return something else in order to
+support resources with C<refid> attributes
+
+=method BUILD
+
+After a resource is constructed, it adds its L<id|/id> and
+L<string representation|/as_string> to the
+L<XML::Ant::Properties|XML::Ant::Properties> singleton with C<toString:>
+prepended to the C<id>.

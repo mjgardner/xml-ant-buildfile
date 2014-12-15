@@ -3,6 +3,8 @@ package XML::Ant::BuildFile::TaskContainer;
 # ABSTRACT: Container for XML::Ant::BuildFile::Task plugins
 
 use English '-no_match_vars';
+## no critic (Subroutines::ProhibitCallsToUndeclaredSubs)
+use List::Util 1.33 'any';
 use Moose;
 use Module::Pluggable (
     sub_name    => 'task_plugins',
@@ -12,6 +14,57 @@ use Module::Pluggable (
 use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
+
+sub BUILD {
+    my $self = shift;
+
+    ## no critic (ValuesAndExpressions::ProhibitMagicNumbers)
+    my %isa_map = map { lc( ( split /::/ => $ARG )[-1] ) => $ARG }
+        $self->task_plugins;
+    $self->meta->add_attribute(
+        _tasks => (
+            traits      => [qw(XPathObjectList Array)],
+            xpath_query => join( q{|} => map {".//$ARG"} keys %isa_map ),
+            isa_map     => \%isa_map,
+            handles     => {
+                all_tasks    => 'elements',
+                task         => 'get',
+                filter_tasks => 'grep',
+                find_task    => 'first',
+                num_tasks    => 'count',
+            },
+        ),
+    );
+    return;
+}
+
+sub tasks {
+    my ( $self, @names ) = @ARG;
+    return $self->filter_tasks(
+        sub {
+            any { $_ eq $ARG->task_name } @names;
+        },
+    );
+}
+
+__PACKAGE__->meta->make_immutable();
+
+no Moose;
+
+1;
+
+__END__
+
+=head1 SYNOPSIS
+
+    package XML::Ant::BuildFile::Task::Foo;
+    use Moose;
+    extends 'XML::Ant::BuildFile::TaskContainer';
+
+=head1 DESCRIPTION
+
+Base class for containers of multiple
+L<XML::Ant::BuildFile::Task|XML::Ant::BuildFile::Task> plugins.
 
 =method all_tasks
 
@@ -33,53 +86,6 @@ Returns a count of the number of tasks in this target.
 
 Automatically run after object construction to set up task object support.
 
-=cut
-
-sub BUILD {
-    my $self = shift;
-
-    ## no critic (ValuesAndExpressions::ProhibitMagicNumbers)
-    my %isa_map = map { lc( ( split /::/ => $ARG )[-1] ) => $ARG }
-        $self->task_plugins;
-    $self->meta->add_attribute(
-        _tasks => (
-            traits      => [qw(XPathObjectList Array)],
-            xpath_query => join( q{|} => map {".//$ARG"} keys %isa_map ),
-            isa_map     => \%isa_map,
-            handles     => {
-                all_tasks    => 'elements',
-                task         => 'get',
-                filter_tasks => 'grep',
-                find_task    => 'first',
-                num_tasks    => 'count',
-            },
-        )
-    );
-    return;
-}
-
 =method tasks
 
 Given one or more task names, returns a list of task objects.
-
-=cut
-
-sub tasks {
-    my ( $self, @names ) = @ARG;
-    return $self->filter_tasks( sub { $ARG->task_name ~~ @names } );
-}
-
-1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    package XML::Ant::BuildFile::Task::Foo;
-    use Moose;
-    extends 'XML::Ant::BuildFile::TaskContainer';
-
-=head1 DESCRIPTION
-
-Base class for containers of multiple
-L<XML::Ant::BuildFile::Task|XML::Ant::BuildFile::Task> plugins.

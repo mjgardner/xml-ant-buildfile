@@ -30,7 +30,7 @@ cmp_deeply(
             unix_filestr_to_native($ARG) => join q{ },
                 map { unix_filestr_to_native($ARG) }
                 @{ $expected_unix{$ARG} },
-            } keys %expected_unix,
+        } keys %expected_unix,
     },
     'concat',
 ) or explain \%concat_hash;

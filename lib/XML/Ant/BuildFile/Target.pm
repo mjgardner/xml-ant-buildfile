@@ -13,12 +13,6 @@ use namespace::autoclean;
 extends 'XML::Ant::BuildFile::TaskContainer';
 with 'XML::Ant::BuildFile::Role::InProject';
 
-=attr name
-
-Name of the target.
-
-=cut
-
 {
 ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
     has name => (
@@ -35,14 +29,6 @@ Name of the target.
     );
 }
 
-=attr dependencies
-
-If the target has any dependencies, this will return them as an array reference
-of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
-objects.
-
-=cut
-
 has dependencies => ( ro, lazy_build, isa => ArrayRef [__PACKAGE__] );
 
 sub _build_dependencies {    ## no critic (ProhibitUnusedPrivateSubroutines)
@@ -51,6 +37,10 @@ sub _build_dependencies {    ## no critic (ProhibitUnusedPrivateSubroutines)
     return [ map { $self->project->target($ARG) } split /,/,
         $self->_depends ];
 }
+
+__PACKAGE__->meta->make_immutable();
+
+no Moose;
 
 1;
 
@@ -69,3 +59,12 @@ __END__
 
 See L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project> for a complete
 description.
+
+=attr name
+
+Name of the target.
+
+=attr dependencies
+
+If the target has any dependencies, this will return them as an array reference
+of C<XML::Ant::BuildFile::Target> objects.

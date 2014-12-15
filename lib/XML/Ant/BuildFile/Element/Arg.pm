@@ -20,23 +20,6 @@ for my $attr (qw(value file path pathref line prefix suffix)) {
     );
 }
 
-=method args
-
-Returns a list of arguments contained in the element.  Currently
-handles C<< <arg/> >> elements with the following attributes:
-
-=over
-
-=item value
-
-=item line
-
-=item pathref
-
-=back
-
-=cut
-
 has _args => ( ro, lazy_build,
     isa => ArrayRef [ Maybe [Str] ],
     traits  => ['Array'],
@@ -52,8 +35,8 @@ sub _build__args
         ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
         return [
             XML::Ant::Properties->apply(
-                '${toString:' . $self->_pathref . '}'
-            )
+                '${toString:' . $self->_pathref . '}',
+            ),
             ]
             if $self->_pathref;
     }
@@ -61,6 +44,9 @@ sub _build__args
 }
 
 __PACKAGE__->meta->make_immutable();
+
+no Moose;
+
 1;
 
 __END__
@@ -86,3 +72,18 @@ __END__
 
 This is an incomplete class to represent C<< <arg/> >> elements in a
 L<build file project|XML::Ant::BuildFile::Project>.
+
+=method args
+
+Returns a list of arguments contained in the element.  Currently
+handles C<< <arg/> >> elements with the following attributes:
+
+=over
+
+=item value
+
+=item line
+
+=item pathref
+
+=back

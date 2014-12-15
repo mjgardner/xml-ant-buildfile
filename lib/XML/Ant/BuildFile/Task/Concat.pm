@@ -34,6 +34,10 @@ has destfile => ( ro, lazy,
         sub { file( XML::Ant::Properties->apply( $ARG[0]->_destfile ) ) },
 );
 
+__PACKAGE__->meta->make_immutable();
+
+no Moose;
+
 1;
 
 __END__

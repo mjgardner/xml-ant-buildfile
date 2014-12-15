@@ -3,6 +3,8 @@ package XML::Ant::BuildFile::ResourceContainer;
 # ABSTRACT: Container for XML::Ant::BuildFile::Resource plugins
 
 use English '-no_match_vars';
+## no critic (Subroutines::ProhibitCallsToUndeclaredSubs)
+use List::Util 1.33 'any';
 use Moose;
 use Module::Pluggable (
     sub_name    => 'resource_plugins',
@@ -12,12 +14,6 @@ use Module::Pluggable (
 use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
-
-=method BUILD
-
-Automatically run after object construction to set up task object support.
-
-=cut
 
 sub BUILD {
     my $self = shift;
@@ -38,21 +34,23 @@ sub BUILD {
                 find_resource    => 'first',
                 num_resources    => 'count',
             },
-        )
+        ),
     );
     return;
 }
 
-=method resources
-
-Given one or more resource type names, returns a list of objects.
-
-=cut
-
 sub resources {
     my ( $self, @names ) = @ARG;
-    return $self->filter_resources( sub { $ARG->resource_name ~~ @names } );
+    return $self->filter_resources(
+        sub {
+            any { $_ eq $ARG->resource_name } @names;
+        },
+    );
 }
+
+__PACKAGE__->meta->make_immutable();
+
+no Moose;
 
 1;
 
@@ -68,3 +66,11 @@ __END__
 
 Base class for containers of multiple
 L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> plugins.
+
+=method BUILD
+
+Automatically run after object construction to set up task object support.
+
+=method resources
+
+Given one or more resource type names, returns a list of objects.

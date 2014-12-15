@@ -24,7 +24,7 @@ cmp_deeply(
     {   map {
             $ARG->[0] => map {"$ARG"}
                 $ARG->[1]->as_string
-            } $project->path_pairs
+        } $project->path_pairs
     },
     {   'site.css.concat' => target_yui('concat/site.css'),
         'site.js.concat'  => target_yui('concat/site.js'),

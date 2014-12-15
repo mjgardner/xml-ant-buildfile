@@ -20,6 +20,8 @@ has project => (
     xpath_query => q{/},
 );
 
+no Moose::Role;
+
 1;
 
 __END__

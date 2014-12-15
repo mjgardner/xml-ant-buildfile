@@ -30,7 +30,7 @@ extends 'XML::Ant::BuildFile::ResourceContainer';
 
 has _paths => ( ro,
     lazy_build,
-    isa => ArrayRef [ Dir | File ],
+    isa => ArrayRef [ Dir | File ],    ## no critic (ProhibitBitwiseOperators)
     traits  => ['Array'],
     handles => {
         all       => 'elements',
@@ -56,7 +56,7 @@ sub _build__paths {    ## no critic (ProhibitUnusedPrivateSubroutines)
 }
 
 has content => ( ro, lazy,
-    isa => ArrayRef [ Dir | File ],
+    isa => ArrayRef [ Dir | File ],    ## no critic (ProhibitBitwiseOperators)
     default => sub { $ARG[0]->_paths },
 );
 
@@ -71,7 +71,7 @@ has _location => (
 
 __PACKAGE__->meta->make_immutable();
 
-no Moose::Role;
+no Moose;
 
 1;
 

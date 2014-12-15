@@ -103,8 +103,8 @@ sub BUILD {
         if ( $attr->type_constraint->name
             =~ /XML::Ant::BuildFile::Resource::/ )
         {
-            my $attr_name  = $attr->name;
-            my $dummy_attr = $self->$attr_name;
+            my $attr_name = $attr->name;
+            $attr_name = $self->$attr_name;
         }
     }
     return;

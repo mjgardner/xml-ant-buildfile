@@ -44,7 +44,7 @@ sub BUILD {
                 find_task    => 'first',
                 num_tasks    => 'count',
             },
-        )
+        ),
     );
     return;
 }
@@ -54,7 +54,7 @@ sub tasks {
     return $self->filter_tasks(
         sub {
             any { $_ eq $ARG->task_name } @names;
-        }
+        },
     );
 }
 

@@ -122,6 +122,8 @@ sub BUILD {
     return;
 }
 
+no Moose;
+
 1;
 
 __END__

@@ -59,6 +59,8 @@ sub resources {
     );
 }
 
+no Moose;
+
 1;
 
 __END__

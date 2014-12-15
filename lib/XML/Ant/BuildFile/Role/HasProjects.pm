@@ -82,6 +82,8 @@ sub _make_ant_finder_callback {
     };
 }
 
+no Moose::Role;
+
 1;
 
 __END__

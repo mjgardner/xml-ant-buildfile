@@ -56,6 +56,9 @@ sub _build__args
 }
 
 __PACKAGE__->meta->make_immutable();
+
+no Moose;
+
 1;
 
 __END__

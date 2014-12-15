@@ -69,6 +69,8 @@ has _location => (
     xpath_query => './@location',
 );
 
+no Moose::Role;
+
 1;
 
 __END__

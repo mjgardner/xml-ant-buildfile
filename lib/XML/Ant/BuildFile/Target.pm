@@ -50,6 +50,8 @@ sub _build_dependencies {    ## no critic (ProhibitUnusedPrivateSubroutines)
         $self->_depends ];
 }
 
+no Moose;
+
 1;
 
 __END__

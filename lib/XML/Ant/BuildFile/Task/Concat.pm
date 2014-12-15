@@ -39,6 +39,8 @@ has destfile => ( ro, lazy,
         sub { file( XML::Ant::Properties->apply( $ARG[0]->_destfile ) ) },
 );
 
+no Moose;
+
 1;
 
 __END__

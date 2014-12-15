@@ -43,6 +43,8 @@ for my $attr (qw(dir file)) {
     );
 }
 
+no Moose;
+
 1;
 
 __END__

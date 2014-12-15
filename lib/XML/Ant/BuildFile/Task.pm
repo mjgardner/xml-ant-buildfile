@@ -28,6 +28,8 @@ has task_name => ( ro, lazy,
     default  => sub { $ARG[0]->node->nodeName },
 );
 
+no Moose::Role;
+
 1;
 
 __END__

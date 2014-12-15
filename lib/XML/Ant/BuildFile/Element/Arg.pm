@@ -47,8 +47,8 @@ sub _build__args
         ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
         return [
             XML::Ant::Properties->apply(
-                '${toString:' . $self->_pathref . '}'
-            )
+                '${toString:' . $self->_pathref . '}',
+            ),
             ]
             if $self->_pathref;
     }

@@ -96,8 +96,7 @@ Name of the target.
 =head2 dependencies
 
 If the target has any dependencies, this will return them as an array reference
-of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
-objects.
+of C<XML::Ant::BuildFile::Target> objects.
 
 =head1 SUPPORT
 

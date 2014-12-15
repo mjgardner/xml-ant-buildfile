@@ -38,7 +38,7 @@ around as_string => sub {
         sub {
             $ARG->resource_name eq $self->resource_name
                 and $ARG->id eq $self->_refid;
-        }
+        },
     );
     return $antecedent->as_string;
 };
@@ -64,7 +64,7 @@ around content => sub {
         sub {
             $ARG->resource_name eq $self->resource_name
                 and $ARG->id eq $self->_refid;
-        }
+        },
     );
     return $antecedent->content;
 };
@@ -133,7 +133,7 @@ Every role consumer must implement the C<as_string> method.
 
 =head2 content
 
-L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> provides a
+C<XML::Ant::BuildFile::Resource> provides a
 default C<content> attribute, but it only returns C<undef>.  Consumers should
 use the C<around> method modifier to return something else in order to
 support resources with C<refid> attributes

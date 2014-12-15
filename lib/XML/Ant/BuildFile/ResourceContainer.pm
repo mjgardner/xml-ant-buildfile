@@ -45,7 +45,7 @@ sub BUILD {
                 find_resource    => 'first',
                 num_resources    => 'count',
             },
-        )
+        ),
     );
     return;
 }
@@ -55,9 +55,11 @@ sub resources {
     return $self->filter_resources(
         sub {
             any { $_ eq $ARG->resource_name } @names;
-        }
+        },
     );
 }
+
+__PACKAGE__->meta->make_immutable();
 
 no Moose;
 

@@ -27,7 +27,7 @@ use Path::Class;
 use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
-use TryCatch;
+use Try::Tiny;
 use XML::Ant::BuildFile::Project;
 use namespace::autoclean;
 
@@ -72,13 +72,11 @@ sub _make_ant_finder_callback {
             or any { '.svn' eq $_ } @dir_list;
 
         # look for matching XML files but only carp if parse error
-        my $error;
-        try {
+        $projects_ref->{"$path"} = try {
             ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
-            $projects_ref->{"$path"}
-                = XML::Ant::BuildFile::Project->new( file => $path );
+            XML::Ant::BuildFile::Project->new( file => $path );
         }
-        catch($error) { carp $error };
+        catch { carp $_ };
         return;
     };
 }

@@ -72,8 +72,8 @@ sub _make_ant_finder_callback {
             or any { '.svn' eq $_ } @dir_list;
 
         # look for matching XML files but only carp if parse error
+        ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
         $projects_ref->{"$path"} = try {
-            ## no critic (ValuesAndExpressions::ProhibitAccessOfPrivateData)
             XML::Ant::BuildFile::Project->new( file => $path );
         }
         catch { carp $_ };

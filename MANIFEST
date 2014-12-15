@@ -16,6 +16,7 @@ lib/XML/Ant/BuildFile/Resource/FileList.pm
 lib/XML/Ant/BuildFile/Resource/Path.pm
 lib/XML/Ant/BuildFile/ResourceContainer.pm
 lib/XML/Ant/BuildFile/Role/HasProjects.pm
+lib/XML/Ant/BuildFile/Role/HasProjects.pm.ERR
 lib/XML/Ant/BuildFile/Role/InProject.pm
 lib/XML/Ant/BuildFile/Target.pm
 lib/XML/Ant/BuildFile/Task.pm

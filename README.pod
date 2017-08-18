@@ -57,6 +57,27 @@ from the build file.  The keys are the target names.
 
 =head1 METHODS
 
+=head2 BUILD
+
+After construction, the app-wide L<XML::Ant::Properties|XML::Ant::Properties>
+singleton stores any C<< <property/> >> name/value pairs set by the build file,
+as well as any resource string expansions handled by
+L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> plugins.
+It also contains the following predefined properties as per the Ant
+documentation:
+
+=over
+
+=item os.name
+
+=item basedir
+
+=item ant.file
+
+=item ant.project.name
+
+=back
+
 =head2 filelists
 
 Returns an array of all L<filelist|XML::Ant::BuildFile::Resource::FileList>s
@@ -116,27 +137,6 @@ Given a target name, returns true or false if the target exists.
 =head2 num_targets
 
 Returns a count of the number of targets in the build file.
-
-=head2 BUILD
-
-After construction, the app-wide L<XML::Ant::Properties|XML::Ant::Properties>
-singleton stores any C<< <property/> >> name/value pairs set by the build file,
-as well as any resource string expansions handled by
-L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> plugins.
-It also contains the following predefined properties as per the Ant
-documentation:
-
-=over
-
-=item os.name
-
-=item basedir
-
-=item ant.file
-
-=item ant.project.name
-
-=back
 
 =head1 SUPPORT
 

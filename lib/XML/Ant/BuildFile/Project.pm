@@ -53,181 +53,6 @@ subtype 'FileStr', as Str;
 coerce 'FileStr', from File, via {"$_"};
 has '+_file' => ( isa => 'FileStr', coerce => 1 );
 
-{
-## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
-
-=attr name
-
-Name of the Ant project.
-
-=cut
-
-    has name => (
-        isa         => Str,
-        traits      => ['XPathValue'],
-        xpath_query => '/project/@name',
-    );
-
-    has _properties => (
-        lazy        => 1,
-        isa         => HashRef [Str],
-        traits      => ['XPathValueMap'],
-        xpath_query => '//property[@name and @value]',
-        xpath_key   => './@name',
-        xpath_value => './@value',
-        default     => sub { {} },
-    );
-
-    has _filelists => (
-        isa         => 'ArrayRef[XML::Ant::BuildFile::Resource::FileList]',
-        traits      => [qw(XPathObjectList Array)],
-        xpath_query => '//filelist[@id]',
-        handles     => {
-
-=method filelists
-
-Returns an array of all L<filelist|XML::Ant::BuildFile::Resource::FileList>s
-in the project.
-
-=cut
-
-            filelists => 'elements',
-
-=method filelist
-
-Given an index number returns that C<filelist> from the project.
-You can also use negative numbers to count from the end.
-Returns C<undef> if the specified C<filelist> does not exist.
-
-=cut
-
-            filelist => 'get',
-
-=method map_filelists
-
-Given a code reference, transforms every C<filelist> element into a new
-array.
-
-=cut
-
-            map_filelists => 'map',
-
-=method filter_filelists
-
-Given a code reference, returns an array with every C<filelist> element
-for which that code returns C<true>.
-
-=cut
-
-            filter_filelists => 'grep',
-
-=method find_filelist
-
-Given a code reference, returns the first C<filelist> for which the code
-returns C<true>.
-
-=cut
-
-            find_filelist => 'first',
-
-=method num_filelists
-
-Returns a count of all C<filelist>s in the project.
-
-=cut
-
-            num_filelists => 'count',
-        },
-    );
-
-=attr paths
-
-Hash of
-L<XML::Ant::BuildFile::Resource::Path|XML::Ant::BuildFile::Resource::Path>s
-from the build file.  The keys are the path C<id>s.
-
-=cut
-
-    has paths => (
-        auto_deref  => 1,
-        isa         => 'HashRef[XML::Ant::BuildFile::Resource::Path]',
-        traits      => [qw(XPathObjectMap Hash)],
-        xpath_query => '//classpath[@id]|//path[@id]',
-        xpath_key   => './@id',
-
-=method path
-
-Given a list of one or more C<id> strings, returns a list of
-L<XML::Ant::BuildFile::Resource::Path|XML::Ant::BuildFile::Resource::Path>s
-for C<< <classpath/> >>s and C<< <path/> >>s in the project.
-
-=cut
-
-        handles => { path => 'get', path_pairs => 'kv' },
-    );
-
-=attr targets
-
-Hash of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>s
-from the build file.  The keys are the target names.
-
-=cut
-
-    has targets => (
-        auto_deref  => 1,
-        isa         => 'HashRef[XML::Ant::BuildFile::Target]',
-        traits      => [qw(XPathObjectMap Hash)],
-        xpath_query => '/project/target[@name]',
-        xpath_key   => './@name',
-        handles     => {
-
-=method target
-
-Given a list of target names, return the corresponding
-L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
-objects.  In scalar context return only the last target specified.
-
-=cut
-
-            target => 'get',
-
-=method all_targets
-
-Returns a list of all targets as
-L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
-objects.
-
-=cut
-
-            all_targets => 'values',
-
-=method target_names
-
-Returns a list of the target names from the build file.
-
-=cut
-
-            target_names => 'keys',
-
-=method has_target
-
-Given a target name, returns true or false if the target exists.
-
-=cut
-
-            has_target => 'exists',
-
-=method num_targets
-
-Returns a count of the number of targets in the build file.
-
-=cut
-
-            num_targets => 'count',
-        },
-    );
-}
-
 =method BUILD
 
 After construction, the app-wide L<XML::Ant::Properties|XML::Ant::Properties>
@@ -282,6 +107,179 @@ sub BUILD {
     }
     return;
 }
+
+## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+
+=attr name
+
+Name of the Ant project.
+
+=cut
+
+has name => (
+    isa         => Str,
+    traits      => ['XPathValue'],
+    xpath_query => '/project/@name',
+);
+
+has _properties => (
+    lazy        => 1,
+    isa         => HashRef [Str],
+    traits      => ['XPathValueMap'],
+    xpath_query => '//property[@name and @value]',
+    xpath_key   => './@name',
+    xpath_value => './@value',
+    default     => sub { {} },
+);
+
+has _filelists => (
+    isa         => 'ArrayRef[XML::Ant::BuildFile::Resource::FileList]',
+    traits      => [qw(XPathObjectList Array)],
+    xpath_query => '//filelist[@id]',
+    handles     => {
+
+=method filelists
+
+Returns an array of all L<filelist|XML::Ant::BuildFile::Resource::FileList>s
+in the project.
+
+=cut
+
+        filelists => 'elements',
+
+=method filelist
+
+Given an index number returns that C<filelist> from the project.
+You can also use negative numbers to count from the end.
+Returns C<undef> if the specified C<filelist> does not exist.
+
+=cut
+
+        filelist => 'get',
+
+=method map_filelists
+
+Given a code reference, transforms every C<filelist> element into a new
+array.
+
+=cut
+
+        map_filelists => 'map',
+
+=method filter_filelists
+
+Given a code reference, returns an array with every C<filelist> element
+for which that code returns C<true>.
+
+=cut
+
+        filter_filelists => 'grep',
+
+=method find_filelist
+
+Given a code reference, returns the first C<filelist> for which the code
+returns C<true>.
+
+=cut
+
+        find_filelist => 'first',
+
+=method num_filelists
+
+Returns a count of all C<filelist>s in the project.
+
+=cut
+
+        num_filelists => 'count',
+    },
+);
+
+=attr paths
+
+Hash of
+L<XML::Ant::BuildFile::Resource::Path|XML::Ant::BuildFile::Resource::Path>s
+from the build file.  The keys are the path C<id>s.
+
+=cut
+
+has paths => (
+    auto_deref  => 1,
+    isa         => 'HashRef[XML::Ant::BuildFile::Resource::Path]',
+    traits      => [qw(XPathObjectMap Hash)],
+    xpath_query => '//classpath[@id]|//path[@id]',
+    xpath_key   => './@id',
+
+=method path
+
+Given a list of one or more C<id> strings, returns a list of
+L<XML::Ant::BuildFile::Resource::Path|XML::Ant::BuildFile::Resource::Path>s
+for C<< <classpath/> >>s and C<< <path/> >>s in the project.
+
+=cut
+
+    handles => { path => 'get', path_pairs => 'kv' },
+);
+
+=attr targets
+
+Hash of L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>s
+from the build file.  The keys are the target names.
+
+=cut
+
+has targets => (
+    auto_deref  => 1,
+    isa         => 'HashRef[XML::Ant::BuildFile::Target]',
+    traits      => [qw(XPathObjectMap Hash)],
+    xpath_query => '/project/target[@name]',
+    xpath_key   => './@name',
+    handles     => {
+
+=method target
+
+Given a list of target names, return the corresponding
+L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
+objects.  In scalar context return only the last target specified.
+
+=cut
+
+        target => 'get',
+
+=method all_targets
+
+Returns a list of all targets as
+L<XML::Ant::BuildFile::Target|XML::Ant::BuildFile::Target>
+objects.
+
+=cut
+
+        all_targets => 'values',
+
+=method target_names
+
+Returns a list of the target names from the build file.
+
+=cut
+
+        target_names => 'keys',
+
+=method has_target
+
+Given a target name, returns true or false if the target exists.
+
+=cut
+
+        has_target => 'exists',
+
+=method num_targets
+
+Returns a count of the number of targets in the build file.
+
+=cut
+
+        num_targets => 'count',
+    },
+);
 
 no Moose::Util::TypeConstraints;
 no Moose;

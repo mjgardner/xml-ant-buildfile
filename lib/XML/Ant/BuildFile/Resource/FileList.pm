@@ -119,27 +119,25 @@ has content =>
 
 with 'XML::Ant::BuildFile::Resource';
 
-{
 ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
 
-    has _dir_attr => ( ro, required,
-        isa         => Str,
-        traits      => ['XPathValue'],
-        xpath_query => './@dir',
-    );
+has _dir_attr => ( ro, required,
+    isa         => Str,
+    traits      => ['XPathValue'],
+    xpath_query => './@dir',
+);
 
-    has _file_names => ( ro,
-        isa => ArrayRef [Str],
-        traits      => ['XPathValueList'],
-        xpath_query => './file/@name',
-    );
+has _file_names => ( ro,
+    isa => ArrayRef [Str],
+    traits      => ['XPathValueList'],
+    xpath_query => './file/@name',
+);
 
-    has _files_attr_names => ( ro,
-        isa         => Str,
-        traits      => ['XPathValue'],
-        xpath_query => './@files',
-    );
-}
+has _files_attr_names => ( ro,
+    isa         => Str,
+    traits      => ['XPathValue'],
+    xpath_query => './@files',
+);
 
 no Moose;
 

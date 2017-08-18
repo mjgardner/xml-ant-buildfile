@@ -67,24 +67,6 @@ around as_string => sub {
     return $antecedent->as_string;
 };
 
-{
-## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
-
-=attr id
-
-C<id> attribute of this resource.
-
-=cut
-
-    has id =>
-        ( ro, isa => Str, traits => ['XPathValue'], xpath_query => './@id' );
-    has _refid => ( ro,
-        isa         => Str,
-        traits      => ['XPathValue'],
-        xpath_query => './@refid',
-    );
-}
-
 =attr content
 
 C<XML::Ant::BuildFile::Resource> provides a
@@ -126,6 +108,22 @@ sub BUILD {
     }
     return;
 }
+
+## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+
+=attr id
+
+C<id> attribute of this resource.
+
+=cut
+
+has id =>
+    ( ro, isa => Str, traits => ['XPathValue'], xpath_query => './@id' );
+has _refid => ( ro,
+    isa         => Str,
+    traits      => ['XPathValue'],
+    xpath_query => './@refid',
+);
 
 no Moose::Role;
 

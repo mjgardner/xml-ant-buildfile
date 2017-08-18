@@ -33,29 +33,6 @@ use namespace::autoclean;
 extends 'XML::Ant::BuildFile::TaskContainer';
 with 'XML::Ant::BuildFile::Role::InProject';
 
-{
-## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
-
-=attr name
-
-Name of the target.
-
-=cut
-
-    has name => (
-        isa         => Str,
-        traits      => ['XPathValue'],
-        xpath_query => './@name',
-    );
-
-    has _depends => (
-        isa         => Str,
-        traits      => ['XPathValue'],
-        xpath_query => './@depends',
-        predicate   => '_has_depends',
-    );
-}
-
 =attr dependencies
 
 If the target has any dependencies, this will return them as an array reference
@@ -73,6 +50,27 @@ sub _build_dependencies {    ## no critic (ProhibitUnusedPrivateSubroutines)
     return if not $self->_has_depends or not $self->_depends;
     return [ map { $self->project->target($_) } split /,/, $self->_depends ];
 }
+
+## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+
+=attr name
+
+Name of the target.
+
+=cut
+
+has name => (
+    isa         => Str,
+    traits      => ['XPathValue'],
+    xpath_query => './@name',
+);
+
+has _depends => (
+    isa         => Str,
+    traits      => ['XPathValue'],
+    xpath_query => './@depends',
+    predicate   => '_has_depends',
+);
 
 no Moose;
 

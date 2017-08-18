@@ -2,6 +2,10 @@ package XML::Ant::BuildFile::Task::Copy;
 
 # ABSTRACT: copy task node in an Ant build file
 
+use utf8;
+use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
+
+# VERSION
 use English '-no_match_vars';
 use Moose;
 use MooseX::Types::Moose 'Str';

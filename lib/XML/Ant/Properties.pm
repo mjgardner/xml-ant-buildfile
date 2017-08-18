@@ -2,6 +2,10 @@ package XML::Ant::Properties;
 
 # ABSTRACT: Singleton class for Ant properties
 
+use utf8;
+use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
+
+# VERSION
 use strict;
 use English '-no_match_vars';
 use MooseX::Singleton 0.26;

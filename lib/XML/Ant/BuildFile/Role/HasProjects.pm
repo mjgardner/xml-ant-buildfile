@@ -2,6 +2,10 @@ package XML::Ant::BuildFile::Role::HasProjects;
 
 # ABSTRACT: Compose a collection of Ant build file projects
 
+use utf8;
+use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
+
+# VERSION
 use strict;
 use Carp;
 use English '-no_match_vars';

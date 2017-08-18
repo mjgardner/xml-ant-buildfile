@@ -2,6 +2,10 @@ package XML::Ant::BuildFile::Task;
 
 # ABSTRACT: Role for Ant build file tasks
 
+use utf8;
+use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
+
+# VERSION
 use strict;
 use English '-no_match_vars';
 use Moose::Role;

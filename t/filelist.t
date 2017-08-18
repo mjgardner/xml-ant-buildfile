@@ -1,5 +1,9 @@
-#!perl
+#!/usr/bin/env perl
 
+use utf8;
+use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
+
+# VERSION
 use Test::Most tests => 8;
 use English '-no_match_vars';
 use Readonly;

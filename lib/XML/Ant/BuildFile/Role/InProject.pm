@@ -2,6 +2,10 @@ package XML::Ant::BuildFile::Role::InProject;
 
 # ABSTRACT: role for nodes in an Ant project
 
+use utf8;
+use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
+
+# VERSION
 use strict;
 use Moose::Role;
 use namespace::autoclean;

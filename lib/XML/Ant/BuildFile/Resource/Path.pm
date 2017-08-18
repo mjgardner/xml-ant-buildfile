@@ -2,6 +2,10 @@ package XML::Ant::BuildFile::Resource::Path;
 
 # ABSTRACT: Path-like structure in an Ant build file
 
+use utf8;
+use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
+
+# VERSION
 use Modern::Perl;
 use English '-no_match_vars';
 use Moose;

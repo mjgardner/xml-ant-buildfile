@@ -2,6 +2,10 @@ package XML::Ant::BuildFile::TaskContainer;
 
 # ABSTRACT: Container for XML::Ant::BuildFile::Task plugins
 
+use utf8;
+use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
+
+# VERSION
 use English '-no_match_vars';
 use List::Util 1.33 'any';
 use Moose;

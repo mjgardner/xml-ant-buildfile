@@ -2,6 +2,10 @@ package XML::Ant::BuildFile::Element::Arg;
 
 # ABSTRACT: Argument element for a task in an Ant build file
 
+use utf8;
+use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
+
+# VERSION
 use Moose;
 use MooseX::Has::Sugar;
 use MooseX::Types::Moose qw(ArrayRef Maybe Str);

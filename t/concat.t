@@ -13,8 +13,8 @@ Readonly my $PROJECT =>
 my @concat_tasks = $PROJECT->target('concat-files')->tasks('concat');
 
 my %concat_hash = map {
-    $ARG->destfile->stringify() => map { $ARG->as_string }
-        $ARG->all_resources
+    $_->destfile->stringify() => map { $_->as_string }
+        $_->all_resources
 } @concat_tasks;
 
 my %expected_unix = (
@@ -27,12 +27,11 @@ my %expected_unix = (
 cmp_deeply(
     \%concat_hash,
     {   map {
-            unix_filestr_to_native($ARG) => join q{ },
-                map { unix_filestr_to_native($ARG) }
-                @{ $expected_unix{$ARG} },
+            unix_filestr_to_native($_) => join q{ },
+                map { unix_filestr_to_native($_) } @{ $expected_unix{$_} },
         } keys %expected_unix,
     },
     'concat',
 ) or explain \%concat_hash;
 
-sub unix_filestr_to_native { file( split q{/}, $ARG[0] )->stringify() }
+sub unix_filestr_to_native { file( split q{/}, $_[0] )->stringify() }

@@ -21,11 +21,11 @@ isa_ok(
     'file list to copy',
 );
 cmp_bag(
-    [ $filelist->map_files( sub {"$ARG"} ) ],
-    [   map { unix_filestr_to_native("t/target/yui/mincat/$ARG") }
+    [ $filelist->map_files( sub {"$_"} ) ],
+    [   map { unix_filestr_to_native("t/target/yui/mincat/$_") }
             qw(css/min/site.css js/min/site.js),
     ],
     'names in file list',
 );
 
-sub unix_filestr_to_native { file( split q{/}, $ARG[0] )->stringify() }
+sub unix_filestr_to_native { file( split q{/}, $_[0] )->stringify() }

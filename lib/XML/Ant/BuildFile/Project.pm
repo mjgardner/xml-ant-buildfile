@@ -17,7 +17,7 @@ extends 'XML::Ant::BuildFile::ResourceContainer';
 with 'XML::Rabbit::RootNode';
 
 subtype 'FileStr', as Str;
-coerce 'FileStr', from File, via {"$ARG"};
+coerce 'FileStr', from File, via {"$_"};
 has '+_file' => ( isa => 'FileStr', coerce => 1 );
 
 {
@@ -88,7 +88,7 @@ sub BUILD {
         'ant.project.name' => $self->name,
     );
     for my $property (
-        grep { not XML::Ant::Properties->exists($ARG) }
+        grep { not XML::Ant::Properties->exists($_) }
         keys %ant_property
         )
     {

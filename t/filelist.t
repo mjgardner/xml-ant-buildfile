@@ -30,21 +30,19 @@ cmp_bag(
 is( $project->num_filelists(), 3, 'filelists' );
 
 cmp_deeply(
-    [ $project->map_filelists( sub { $ARG->id } ) ],
+    [ $project->map_filelists( sub { $_->id } ) ],
     [ ('filelist') x 3 ],
     'filelist ids',
 );
 
 cmp_deeply(
-    [ $project->map_filelists( sub { $ARG->directory->stringify() } ) ],
+    [ $project->map_filelists( sub { $_->directory->stringify() } ) ],
     [ (q{t}) x 3 ],
     'filelist dirs',
 );
 
 cmp_deeply(
-    [   map { $ARG->stringify() }
-            $project->map_filelists( sub { $ARG->files } )
-    ],
-    [ map { file( 't', $ARG )->stringify() } qw(a a b a b) ],
+    [ map { $_->stringify() } $project->map_filelists( sub { $_->files } ) ],
+    [ map { file( 't', $_ )->stringify() } qw(a a b a b) ],
     'files'
 );

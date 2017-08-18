@@ -18,12 +18,12 @@ sub BUILD {
     my $self = shift;
 
     ## no critic (ValuesAndExpressions::ProhibitMagicNumbers)
-    my %isa_map = map { lc( ( split /::/ => $ARG )[-1] ) => $ARG }
-        $self->resource_plugins;
+    my %isa_map
+        = map { lc( ( split /::/ )[-1] ) => $_ } $self->resource_plugins;
     $self->meta->add_attribute(
         _resources => (
             traits      => [qw(XPathObjectList Array)],
-            xpath_query => join( q{|} => map {".//$ARG"} keys %isa_map ),
+            xpath_query => join( q{|} => map {".//$_"} keys %isa_map ),
             isa_map     => \%isa_map,
             handles     => {
                 all_resources    => 'elements',
@@ -39,7 +39,7 @@ sub BUILD {
 }
 
 sub resources {
-    my ( $self, @names ) = @ARG;
+    my ( $self, @names ) = @_;
     return $self->filter_resources(
         sub {
             my $resource = $_;

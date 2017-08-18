@@ -38,14 +38,14 @@ sub _build__paths {    ## no critic (ProhibitUnusedPrivateSubroutines)
         }
         push @paths, file($location);
     }
-    push @paths, map { $ARG->files } $self->resources('filelist');
+    push @paths, map { $_->files } $self->resources('filelist');
 
     return \@paths;
 }
 
 has content => ( ro, lazy,
     isa => ArrayRef [ Dir | File ],    ## no critic (ProhibitBitwiseOperators)
-    default => sub { $ARG[0]->_paths },
+    default => sub { $_[0]->_paths },
 );
 
 with 'XML::Ant::BuildFile::Resource';

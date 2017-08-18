@@ -31,14 +31,14 @@ while ( my ( $attr, $xpath ) = each %xpath_attr ) {
 
 has jar => ( ro, lazy,
     isa     => File,
-    default => sub { file( XML::Ant::Properties->apply( $ARG[0]->_jar ) ) },
+    default => sub { file( XML::Ant::Properties->apply( $_[0]->_jar ) ) },
 );
 
 has _args => ( ro,
     isa         => 'ArrayRef[XML::Ant::BuildFile::Element::Arg]',
     traits      => [qw(XPathObjectList Array)],
     xpath_query => './arg',
-    handles     => { args => [ map => sub { $ARG->args } ] },
+    handles     => { args => [ map => sub { $_->args } ] },
 );
 
 no Moose;

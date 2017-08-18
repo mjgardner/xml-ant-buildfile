@@ -63,22 +63,22 @@ sub _build__files
 
     if ( not state $recursion_guard) {
         $recursion_guard = 1;
-        @file_names = map { XML::Ant::Properties->apply($ARG) } @file_names;
+        @file_names = map { XML::Ant::Properties->apply($_) } @file_names;
         undef $recursion_guard;
     }
 
-    return [ map { $self->_prepend_dir($ARG) } @file_names ];
+    return [ map { $self->_prepend_dir($_) } @file_names ];
 }
 
 sub _prepend_dir {
-    my ( $self, $file_name ) = @ARG;
+    my ( $self, $file_name ) = @_;
     return $self->directory->subsumes( file($file_name) )
         ? file($file_name)
         : $self->directory->file($file_name);
 }
 
 has content =>
-    ( ro, lazy, isa => ArrayRef [File], default => sub { $ARG[0]->_files } );
+    ( ro, lazy, isa => ArrayRef [File], default => sub { $_[0]->_files } );
 
 with 'XML::Ant::BuildFile::Resource';
 

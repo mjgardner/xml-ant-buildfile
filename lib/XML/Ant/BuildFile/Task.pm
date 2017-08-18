@@ -19,7 +19,7 @@ Name of the task's XML node.
 has task_name => ( ro, lazy,
     isa      => Str,
     init_arg => undef,
-    default  => sub { $ARG[0]->node->nodeName },
+    default  => sub { $_[0]->node->nodeName },
 );
 
 no Moose::Role;

@@ -52,7 +52,7 @@ sub _make_ant_finder_callback {
 
         my @dir_list = $path->dir->dir_list;
         for ( 0 .. $#dir_list ) {    # skip symlinks
-            return if -l file( @dir_list[ 0 .. $ARG ] )->stringify();
+            return if -l file( @dir_list[ 0 .. $_ ] )->stringify();
         }
         return                       # skip SCM dirs
             if any { 'CVS' eq $_ } @dir_list

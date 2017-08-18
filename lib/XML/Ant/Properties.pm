@@ -18,14 +18,14 @@ has _properties => ( rw,
     traits   => ['Hash'],
     default  => sub { {} },
     handles  => {
-        map { $ARG => $ARG }
+        map { ($_) x 2 }
             qw(count get set delete exists defined keys values clear kv),
     },
 );
 
 around set => sub {
-    my ( $orig, $self ) = splice @ARG, 0, 2;
-    my %element  = @ARG;
+    my ( $orig, $self ) = splice @_, 0, 2;
+    my %element  = @_;
     my %property = %{ $self->_properties };
     while ( my ( $key, $value ) = each %element ) {
         $property{$key} = $self->apply($value);

@@ -22,8 +22,8 @@ cmp_bag(
 
 cmp_deeply(
     {   map {
-            $ARG->[0] => map {"$ARG"}
-                $ARG->[1]->as_string
+            $_->[0] => map {"$_"}
+                $_->[1]->as_string
         } $project->path_pairs
     },
     {   'site.css.concat' => target_yui('concat/site.css'),
@@ -34,6 +34,6 @@ cmp_deeply(
     'path location pairs',
 );
 
-sub target_yui { unix_filestr_to_native("t/target/yui/$ARG[0]") }
+sub target_yui { unix_filestr_to_native("t/target/yui/$_[0]") }
 
-sub unix_filestr_to_native { file( split q{/}, $ARG[0] )->stringify() }
+sub unix_filestr_to_native { file( split q{/}, $_[0] )->stringify() }

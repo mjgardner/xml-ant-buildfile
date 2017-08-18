@@ -13,19 +13,19 @@ with 'XML::Ant::BuildFile::Role::InProject';
 has resource_name => ( ro, lazy,
     isa      => Str,
     init_arg => undef,
-    default  => sub { $ARG[0]->node->nodeName },
+    default  => sub { $_[0]->node->nodeName },
 );
 
 requires qw(as_string content);
 
 around as_string => sub {
-    my ( $orig, $self ) = splice @ARG, 0, 2;
-    return $self->$orig(@ARG) if !$self->_refid;
+    my ( $orig, $self ) = splice @_, 0, 2;
+    return $self->$orig(@_) if !$self->_refid;
 
     my $antecedent = $self->project->find_resource(
         sub {
-            $ARG->resource_name eq $self->resource_name
-                and $ARG->id eq $self->_refid;
+            $_->resource_name eq $self->resource_name
+                and $_->id eq $self->_refid;
         },
     );
     return $antecedent->as_string;
@@ -45,13 +45,13 @@ around as_string => sub {
 has content => ( ro, lazy, builder => '_build_content', isa => Maybe );
 
 around content => sub {
-    my ( $orig, $self ) = splice @ARG, 0, 2;
-    return $self->$orig(@ARG) if !$self->_refid;
+    my ( $orig, $self ) = splice @_, 0, 2;
+    return $self->$orig(@_) if !$self->_refid;
 
     my $antecedent = $self->project->find_resource(
         sub {
-            $ARG->resource_name eq $self->resource_name
-                and $ARG->id eq $self->_refid;
+            $_->resource_name eq $self->resource_name
+                and $_->id eq $self->_refid;
         },
     );
     return $antecedent->content;

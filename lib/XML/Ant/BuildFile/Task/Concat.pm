@@ -31,7 +31,7 @@ object.
 has destfile => ( ro, lazy,
     isa => File,
     default =>
-        sub { file( XML::Ant::Properties->apply( $ARG[0]->_destfile ) ) },
+        sub { file( XML::Ant::Properties->apply( $_[0]->_destfile ) ) },
 );
 
 no Moose;

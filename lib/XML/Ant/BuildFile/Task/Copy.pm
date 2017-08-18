@@ -24,7 +24,7 @@ for my $attr (qw(dir file)) {
         isa     => "Path::Class::\u$attr",
         default => sub {
             my $method  = "_to_$attr";
-            my $applied = XML::Ant::Properties->apply( $ARG[0]->$method );
+            my $applied = XML::Ant::Properties->apply( $_[0]->$method );
             ## no critic (ProhibitStringyEval, RequireCheckingReturnValueOfEval)
             return eval "Path::Class::$attr('$applied')";
         },

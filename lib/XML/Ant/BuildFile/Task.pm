@@ -2,6 +2,26 @@ package XML::Ant::BuildFile::Task;
 
 # ABSTRACT: Role for Ant build file tasks
 
+=head1 DESCRIPTION
+
+This is a role shared by tasks in an
+L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project>.
+
+=head1 SYNOPSIS
+
+    package XML::Ant::BuildFile::Task::Foo;
+    use Moose;
+    with 'XML::Ant::BuildFile::Task';
+
+    after BUILD => sub {
+        my $self = shift;
+        print "I'm a ", $self->task_name, "\n";
+    };
+
+    1;
+
+=cut
+
 use utf8;
 use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
 
@@ -29,23 +49,3 @@ has task_name => ( ro, lazy,
 no Moose::Role;
 
 1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    package XML::Ant::BuildFile::Task::Foo;
-    use Moose;
-    with 'XML::Ant::BuildFile::Task';
-
-    after BUILD => sub {
-        my $self = shift;
-        print "I'm a ", $self->task_name, "\n";
-    };
-
-    1;
-
-=head1 DESCRIPTION
-
-This is a role shared by tasks in an
-L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project>.

@@ -2,6 +2,30 @@ package XML::Ant::BuildFile::Role::HasProjects;
 
 # ABSTRACT: Compose a collection of Ant build file projects
 
+=head1 DESCRIPTION
+
+This L<Moose::Role|Moose::Role> helps you compose a collection of Ant
+project files found in a directory of source code.  The directory is searched
+recursively for files ending in F<.xml>, skipping any symbolic links as well
+as F<CVS> and Subversion F<.svn> directories.
+
+=head1 SYNOPSIS
+
+    package My::Package;
+    use Moose;
+    with 'XML::Ant::BuildFile::Role::HasProjects';
+
+    sub frobnicate_projects {
+        my $self = shift;
+        $self->working_copy('/dir/to/search');
+        print "Found these projects:\n";
+        print "$_\n" for @{$self->project_files};
+    }
+
+    1;
+
+=cut
+
 use utf8;
 use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
 
@@ -22,10 +46,24 @@ use Try::Tiny;
 use XML::Ant::BuildFile::Project;
 use namespace::autoclean;
 
+=attr working_copy
+
+A L<Path::Class::Dir|Path::Class::Dir> to search for L</projects>.
+
+=cut
+
 has working_copy => ( rw, required, coerce,
     isa           => Dir,
     documentation => 'directory containing content',
 );
+
+=attr projects
+
+Reference to an array of
+L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project>s in the
+current C<working_copy> directory.
+
+=cut
 
 has projects => ( rw, lazy,
     builder => '_build_projects',
@@ -75,35 +113,3 @@ sub _make_ant_finder_callback {
 no Moose::Role;
 
 1;
-
-=head1 SYNOPSIS
-
-    package My::Package;
-    use Moose;
-    with 'XML::Ant::BuildFile::Role::HasProjects';
-
-    sub frobnicate_projects {
-        my $self = shift;
-        $self->working_copy('/dir/to/search');
-        print "Found these projects:\n";
-        print "$_\n" for @{$self->project_files};
-    }
-
-    1;
-
-=head1 DESCRIPTION
-
-This L<Moose::Role|Moose::Role> helps you compose a collection of Ant
-project files found in a directory of source code.  The directory is searched
-recursively for files ending in F<.xml>, skipping any symbolic links as well
-as F<CVS> and Subversion F<.svn> directories.
-
-=attr working_copy
-
-A L<Path::Class::Dir|Path::Class::Dir> to search for L</projects>.
-
-=attr projects
-
-Reference to an array of
-L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project>s in the
-current C<working_copy> directory.

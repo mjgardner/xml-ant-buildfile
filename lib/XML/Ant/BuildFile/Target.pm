@@ -2,6 +2,22 @@ package XML::Ant::BuildFile::Target;
 
 # ABSTRACT: target node within an Ant build file
 
+=head1 DESCRIPTION
+
+See L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project> for a complete
+description.
+
+=head1 SYNOPSIS
+
+    use XML::Ant::BuildFile::Project;
+
+    my $project = XML::Ant::BuildFile::Project->new( file => 'build.xml' );
+    for my $target ( values %{$project->targets} ) {
+        print 'got target: ', $target->name, "\n";
+    }
+
+=cut
+
 use utf8;
 use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
 
@@ -19,6 +35,13 @@ with 'XML::Ant::BuildFile::Role::InProject';
 
 {
 ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+
+=attr name
+
+Name of the target.
+
+=cut
+
     has name => (
         isa         => Str,
         traits      => ['XPathValue'],
@@ -32,6 +55,13 @@ with 'XML::Ant::BuildFile::Role::InProject';
         predicate   => '_has_depends',
     );
 }
+
+=attr dependencies
+
+If the target has any dependencies, this will return them as an array reference
+of C<XML::Ant::BuildFile::Target> objects.
+
+=cut
 
 has dependencies => ( ro, lazy,
     builder => '_build_dependencies',
@@ -47,28 +77,3 @@ sub _build_dependencies {    ## no critic (ProhibitUnusedPrivateSubroutines)
 no Moose;
 
 1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    use XML::Ant::BuildFile::Project;
-
-    my $project = XML::Ant::BuildFile::Project->new( file => 'build.xml' );
-    for my $target ( values %{$project->targets} ) {
-        print 'got target: ', $target->name, "\n";
-    }
-
-=head1 DESCRIPTION
-
-See L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project> for a complete
-description.
-
-=attr name
-
-Name of the target.
-
-=attr dependencies
-
-If the target has any dependencies, this will return them as an array reference
-of C<XML::Ant::BuildFile::Target> objects.

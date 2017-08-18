@@ -2,6 +2,19 @@ package XML::Ant::BuildFile::ResourceContainer;
 
 # ABSTRACT: Container for XML::Ant::BuildFile::Resource plugins
 
+=head1 DESCRIPTION
+
+Base class for containers of multiple
+L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> plugins.
+
+=head1 SYNOPSIS
+
+    package XML::Ant::BuildFile::Resource::Foo;
+    use Moose;
+    extends 'XML::Ant::BuildFile::ResourceContainer';
+
+=cut
+
 use utf8;
 use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
 
@@ -17,6 +30,12 @@ use Module::Pluggable (
 use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
+
+=method BUILD
+
+Automatically run after object construction to set up task object support.
+
+=cut
 
 sub BUILD {
     my $self = shift;
@@ -42,6 +61,12 @@ sub BUILD {
     return;
 }
 
+=method resources
+
+Given one or more resource type names, returns a list of objects.
+
+=cut
+
 sub resources {
     my ( $self, @names ) = @_;
     return $self->filter_resources(
@@ -55,24 +80,3 @@ sub resources {
 no Moose;
 
 1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    package XML::Ant::BuildFile::Resource::Foo;
-    use Moose;
-    extends 'XML::Ant::BuildFile::ResourceContainer';
-
-=head1 DESCRIPTION
-
-Base class for containers of multiple
-L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource> plugins.
-
-=method BUILD
-
-Automatically run after object construction to set up task object support.
-
-=method resources
-
-Given one or more resource type names, returns a list of objects.

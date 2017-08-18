@@ -2,6 +2,27 @@ package XML::Ant::BuildFile::Resource::Path;
 
 # ABSTRACT: Path-like structure in an Ant build file
 
+=head1 DESCRIPTION
+
+This is a L<Moose|Moose> type class meant for use with
+L<XML::Rabbit|XML::Rabbit> when processing path-like structures in an Ant
+build file.
+
+=head1 SYNOPSIS
+
+    package My::Ant;
+    use Moose;
+    with 'XML::Rabbit::RootNode';
+
+    has paths => (
+        isa         => 'HashRef[XML::Ant::BuildFile::Resource::Path]',
+        traits      => 'XPathObjectMap',
+        xpath_query => '//classpath[@id]|//path[@id]',
+        xpath_key   => './@id',
+    );
+
+=cut
+
 use utf8;
 use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
 
@@ -25,7 +46,17 @@ has _paths => ( ro, lazy,
     isa    => ArrayRef [ Dir | File ], ## no critic (ProhibitBitwiseOperators)
     traits => ['Array'],
     handles => {
-        all       => 'elements',
+
+=method all
+
+=cut
+
+        all => 'elements',
+
+=method as_string
+
+=cut
+
         as_string => [ join => $OSNAME =~ /\A MSWin/ ? q{;} : q{:} ],
     },
 );
@@ -64,28 +95,3 @@ has _location => (
 no Moose;
 
 1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    package My::Ant;
-    use Moose;
-    with 'XML::Rabbit::RootNode';
-
-    has paths => (
-        isa         => 'HashRef[XML::Ant::BuildFile::Resource::Path]',
-        traits      => 'XPathObjectMap',
-        xpath_query => '//classpath[@id]|//path[@id]',
-        xpath_key   => './@id',
-    );
-
-=head1 DESCRIPTION
-
-This is a L<Moose|Moose> type class meant for use with
-L<XML::Rabbit|XML::Rabbit> when processing path-like structures in an Ant
-build file.
-
-=method all
-
-=method as_string

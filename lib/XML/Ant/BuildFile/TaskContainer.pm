@@ -2,6 +2,19 @@ package XML::Ant::BuildFile::TaskContainer;
 
 # ABSTRACT: Container for XML::Ant::BuildFile::Task plugins
 
+=head1 DESCRIPTION
+
+Base class for containers of multiple
+L<XML::Ant::BuildFile::Task|XML::Ant::BuildFile::Task> plugins.
+
+=head1 SYNOPSIS
+
+    package XML::Ant::BuildFile::Task::Foo;
+    use Moose;
+    extends 'XML::Ant::BuildFile::TaskContainer';
+
+=cut
+
 use utf8;
 use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
 
@@ -18,6 +31,12 @@ use Regexp::DefaultFlags;
 ## no critic (RequireDotMatchAnything, RequireExtendedFormatting)
 ## no critic (RequireLineBoundaryMatching)
 
+=method BUILD
+
+Automatically run after object construction to set up task object support.
+
+=cut
+
 sub BUILD {
     my $self = shift;
 
@@ -30,16 +49,50 @@ sub BUILD {
             xpath_query => join( q{|} => map {".//$_"} keys %isa_map ),
             isa_map     => \%isa_map,
             handles     => {
-                all_tasks    => 'elements',
-                task         => 'get',
+
+=method all_tasks
+
+Returns an array of task objects contained in this target.
+
+=cut
+
+                all_tasks => 'elements',
+
+=method task
+
+Given an index number returns that task from the target.
+
+=cut
+
+                task => 'get',
+
+=method filter_tasks
+
+Returns all task objects for which the given code reference returns C<true>.
+
+=cut
+
                 filter_tasks => 'grep',
                 find_task    => 'first',
-                num_tasks    => 'count',
+
+=method num_tasks
+
+Returns a count of the number of tasks in this target.
+
+=cut
+
+                num_tasks => 'count',
             },
         ),
     );
     return;
 }
+
+=method tasks
+
+Given one or more task names, returns a list of task objects.
+
+=cut
 
 sub tasks {
     my ( $self, @names ) = @_;
@@ -54,40 +107,3 @@ sub tasks {
 no Moose;
 
 1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    package XML::Ant::BuildFile::Task::Foo;
-    use Moose;
-    extends 'XML::Ant::BuildFile::TaskContainer';
-
-=head1 DESCRIPTION
-
-Base class for containers of multiple
-L<XML::Ant::BuildFile::Task|XML::Ant::BuildFile::Task> plugins.
-
-=method all_tasks
-
-Returns an array of task objects contained in this target.
-
-=method task
-
-Given an index number returns that task from the target.
-
-=method filter_tasks
-
-Returns all task objects for which the given code reference returns C<true>.
-
-=method num_tasks
-
-Returns a count of the number of tasks in this target.
-
-=method BUILD
-
-Automatically run after object construction to set up task object support.
-
-=method tasks
-
-Given one or more task names, returns a list of task objects.

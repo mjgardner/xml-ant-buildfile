@@ -2,6 +2,24 @@ package XML::Ant::BuildFile::Resource::FileList;
 
 # ABSTRACT: file list node within an Ant build file
 
+=head1 DESCRIPTION
+
+See L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project> for a complete
+description.
+
+=head1 SYNOPSIS
+
+    use XML::Ant::BuildFile::Project;
+
+    my $project = XML::Ant::BuildFile::Project->new( file => 'build.xml' );
+    for my $list_ref (@{$project->file_lists}) {
+        print 'id: ', $list_ref->id, "\n";
+        print join "\n", @{$list_ref->files};
+        print "\n\n";
+    }
+
+=cut
+
 use utf8;
 use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
 
@@ -18,6 +36,13 @@ use MooseX::Types::Moose qw(ArrayRef HashRef Str);
 use MooseX::Types::Path::Class qw(Dir File);
 use XML::Ant::Properties;
 use namespace::autoclean;
+
+=attr directory
+
+L<Path::Class::Dir|Path::Class::Dir> indicated by the C<< <filelist> >>
+element's C<dir> attribute with all property substitutions applied.
+
+=cut
 
 has directory => ( ro, required, lazy,
     builder  => '_build_directory',
@@ -43,6 +68,14 @@ has _files => ( ro, lazy,
     traits   => ['Array'],
     init_arg => undef,
     handles  => {
+
+=method files
+
+Returns an array of L<Path::Class::File|Path::Class::File>s within
+this file list with all property substitutions applied.
+
+=cut
+
         files        => 'elements',
         map_files    => 'map',
         filter_files => 'grep',
@@ -111,31 +144,3 @@ with 'XML::Ant::BuildFile::Resource';
 no Moose;
 
 1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    use XML::Ant::BuildFile::Project;
-
-    my $project = XML::Ant::BuildFile::Project->new( file => 'build.xml' );
-    for my $list_ref (@{$project->file_lists}) {
-        print 'id: ', $list_ref->id, "\n";
-        print join "\n", @{$list_ref->files};
-        print "\n\n";
-    }
-
-=head1 DESCRIPTION
-
-See L<XML::Ant::BuildFile::Project|XML::Ant::BuildFile::Project> for a complete
-description.
-
-=attr directory
-
-L<Path::Class::Dir|Path::Class::Dir> indicated by the C<< <filelist> >>
-element's C<dir> attribute with all property substitutions applied.
-
-=method files
-
-Returns an array of L<Path::Class::File|Path::Class::File>s within
-this file list with all property substitutions applied.

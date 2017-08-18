@@ -2,6 +2,26 @@ package XML::Ant::BuildFile::Task::Copy;
 
 # ABSTRACT: copy task node in an Ant build file
 
+=head1 DESCRIPTION
+
+This is a L<Moose|Moose> type class meant for use with
+L<XML::Rabbit|XML::Rabbit> when processing C<< <copy/> >> tasks in an Ant
+build file.
+
+=head1 SYNOPSIS
+
+    package My::Ant;
+    use Moose;
+    with 'XML::Rabbit::Node';
+
+    has paths => (
+        isa         => 'ArrayRef[XML::Ant::BuildFile::Task::Copy]',
+        traits      => 'XPathObjectList',
+        xpath_query => './/copy',
+    );
+
+=cut
+
 use utf8;
 use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
 
@@ -24,6 +44,18 @@ for my $attr (qw(dir file)) {
         xpath_query => "./\@to$attr",
     );
 
+=attr to_file
+
+The file to copy to as a L<Path::Class::File|Path::Class::File> object.
+
+=attr to_dir
+
+The directory to copy a set of
+L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource>s to as a
+L<Path::Class::Dir|Path::Class::Dir> object.
+
+=cut
+
     has "to_$attr" => ( ro, lazy,
         isa     => "Path::Class::\u$attr",
         default => sub {
@@ -38,33 +70,3 @@ for my $attr (qw(dir file)) {
 no Moose;
 
 1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    package My::Ant;
-    use Moose;
-    with 'XML::Rabbit::Node';
-
-    has paths => (
-        isa         => 'ArrayRef[XML::Ant::BuildFile::Task::Copy]',
-        traits      => 'XPathObjectList',
-        xpath_query => './/copy',
-    );
-
-=head1 DESCRIPTION
-
-This is a L<Moose|Moose> type class meant for use with
-L<XML::Rabbit|XML::Rabbit> when processing C<< <copy/> >> tasks in an Ant
-build file.
-
-=attr to_file
-
-The file to copy to as a L<Path::Class::File|Path::Class::File> object.
-
-=attr to_dir
-
-The directory to copy a set of
-L<XML::Ant::BuildFile::Resource|XML::Ant::BuildFile::Resource>s to as a
-L<Path::Class::Dir|Path::Class::Dir> object.

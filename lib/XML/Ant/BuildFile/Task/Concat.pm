@@ -2,6 +2,26 @@ package XML::Ant::BuildFile::Task::Concat;
 
 # ABSTRACT: concat task node in an Ant build file
 
+=head1 DESCRIPTION
+
+This is a L<Moose|Moose> type class meant for use with
+L<XML::Rabbit|XML::Rabbit> when processing C<< <concat/> >> tasks in an Ant
+build file.
+
+=head1 SYNOPSIS
+
+    package My::Ant;
+    use Moose;
+    with 'XML::Rabbit::Node';
+
+    has paths => (
+        isa         => 'ArrayRef[XML::Ant::BuildFile::Task::Concat]',
+        traits      => 'XPathObjectList',
+        xpath_query => './/concat',
+    );
+
+=cut
+
 use utf8;
 use Modern::Perl '2010';    ## no critic (Modules::ProhibitUseQuotedVersion)
 
@@ -41,23 +61,3 @@ has destfile => ( ro, lazy,
 no Moose;
 
 1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    package My::Ant;
-    use Moose;
-    with 'XML::Rabbit::Node';
-
-    has paths => (
-        isa         => 'ArrayRef[XML::Ant::BuildFile::Task::Concat]',
-        traits      => 'XPathObjectList',
-        xpath_query => './/concat',
-    );
-
-=head1 DESCRIPTION
-
-This is a L<Moose|Moose> type class meant for use with
-L<XML::Rabbit|XML::Rabbit> when processing C<< <concat/> >> tasks in an Ant
-build file.

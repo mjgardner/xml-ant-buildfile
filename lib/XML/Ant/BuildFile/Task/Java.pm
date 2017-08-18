@@ -1,5 +1,22 @@
 package XML::Ant::BuildFile::Task::Java;
 
+=head1 DESCRIPTION
+
+This is an incomplete class for Ant Java tasks in a
+L<build file project|XML::Ant::BuildFile::Project>.
+
+=head1 SYNOPSIS
+
+    use XML::Ant::BuildFile::Project;
+    my $project = XML::Ant::BuildFile::Project->new( file => 'build.xml' );
+    my @foo_java = $project->target('foo')->tasks('java');
+    for my $java (@foo_java) {
+        print $java->classname || "$java->jar";
+        print "\n";
+    }
+
+=cut
+
 # ABSTRACT: Java task node in an Ant build file
 
 use utf8;
@@ -20,6 +37,13 @@ with 'XML::Ant::BuildFile::Task';
 
 my %xpath_attr = (
     ## no critic (ValuesAndExpressions::RequireInterpolationOfMetachars)
+
+=attr classname
+
+A string representing the Java class that's executed.
+
+=cut
+
     classname  => './@classname',
     _jar       => './@jar',
     _args_attr => './@args',
@@ -33,6 +57,12 @@ while ( my ( $attr, $xpath ) = each %xpath_attr ) {
     );
 }
 
+=attr jar
+
+A L<Path::Class::File|Path::Class::File> for the jar file being executed.
+
+=cut
+
 has jar => ( ro, lazy,
     isa     => File,
     default => sub { file( XML::Ant::Properties->apply( $_[0]->_jar ) ) },
@@ -42,38 +72,16 @@ has _args => ( ro,
     isa         => 'ArrayRef[XML::Ant::BuildFile::Element::Arg]',
     traits      => [qw(XPathObjectList Array)],
     xpath_query => './arg',
-    handles     => { args => [ map => sub { $_->args } ] },
+
+=method args
+
+Returns a list of all arguments passed to the Java class.
+
+=cut
+
+    handles => { args => [ map => sub { $_->args } ] },
 );
 
 no Moose;
 
 1;
-
-__END__
-
-=head1 SYNOPSIS
-
-    use XML::Ant::BuildFile::Project;
-    my $project = XML::Ant::BuildFile::Project->new( file => 'build.xml' );
-    my @foo_java = $project->target('foo')->tasks('java');
-    for my $java (@foo_java) {
-        print $java->classname || "$java->jar";
-        print "\n";
-    }
-
-=head1 DESCRIPTION
-
-This is an incomplete class for Ant Java tasks in a
-L<build file project|XML::Ant::BuildFile::Project>.
-
-=attr classname
-
-A string representing the Java class that's executed.
-
-=attr jar
-
-A L<Path::Class::File|Path::Class::File> for the jar file being executed.
-
-=method args
-
-Returns a list of all arguments passed to the Java class.

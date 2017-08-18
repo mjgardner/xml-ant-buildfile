@@ -29,7 +29,10 @@ with 'XML::Ant::BuildFile::Role::InProject';
     );
 }
 
-has dependencies => ( ro, lazy_build, isa => ArrayRef [__PACKAGE__] );
+has dependencies => ( ro, lazy,
+    builder => '_build_dependencies',
+    isa     => ArrayRef [__PACKAGE__],
+);
 
 sub _build_dependencies {    ## no critic (ProhibitUnusedPrivateSubroutines)
     my $self = shift;

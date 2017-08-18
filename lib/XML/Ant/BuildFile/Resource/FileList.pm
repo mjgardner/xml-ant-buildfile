@@ -15,7 +15,11 @@ use MooseX::Types::Path::Class qw(Dir File);
 use XML::Ant::Properties;
 use namespace::autoclean;
 
-has directory => ( ro, required, lazy_build, isa => Dir, init_arg => undef );
+has directory => ( ro, required, lazy,
+    builder  => '_build_directory',
+    isa      => Dir,
+    init_arg => undef,
+);
 
 sub _build_directory {    ## no critic (ProhibitUnusedPrivateSubroutines)
     my $self      = shift;
@@ -29,9 +33,9 @@ sub _build_directory {    ## no critic (ProhibitUnusedPrivateSubroutines)
     return dir($directory);
 }
 
-has _files => ( ro,
-    lazy_build,
-    isa => ArrayRef [File],
+has _files => ( ro, lazy,
+    builder  => '_build__files',
+    isa      => ArrayRef [File],
     traits   => ['Array'],
     init_arg => undef,
     handles  => {

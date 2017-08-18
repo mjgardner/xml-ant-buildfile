@@ -20,8 +20,9 @@ for my $attr (qw(value file path pathref line prefix suffix)) {
     );
 }
 
-has _args => ( ro, lazy_build,
-    isa => ArrayRef [ Maybe [Str] ],
+has _args => ( ro, lazy,
+    builder => '_build__args',
+    isa     => ArrayRef [ Maybe [Str] ],
     traits  => ['Array'],
     handles => { args => 'elements' },
 );

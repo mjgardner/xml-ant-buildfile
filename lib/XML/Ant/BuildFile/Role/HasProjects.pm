@@ -5,7 +5,6 @@ package XML::Ant::BuildFile::Role::HasProjects;
 use strict;
 use Carp;
 use English '-no_match_vars';
-## no critic (Subroutines::ProhibitCallsToUndeclaredSubs)
 use List::Util 1.33 'any';
 use Moose::Role;
 use MooseX::Has::Sugar;
@@ -24,9 +23,9 @@ has working_copy => ( rw, required, coerce,
     documentation => 'directory containing content',
 );
 
-has projects => ( rw,
-    lazy_build,
-    isa => HashRef ['XML::Ant::BuildFile::Project'],
+has projects => ( rw, lazy,
+    builder => '_build_projects',
+    isa     => HashRef ['XML::Ant::BuildFile::Project'],
     traits  => ['Hash'],
     handles => {
         project       => 'get',

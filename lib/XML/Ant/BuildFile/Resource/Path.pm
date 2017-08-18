@@ -16,10 +16,10 @@ use XML::Ant::Properties;
 use namespace::autoclean;
 extends 'XML::Ant::BuildFile::ResourceContainer';
 
-has _paths => ( ro,
-    lazy_build,
-    isa => ArrayRef [ Dir | File ],    ## no critic (ProhibitBitwiseOperators)
-    traits  => ['Array'],
+has _paths => ( ro, lazy,
+    builder => '_build__paths',
+    isa    => ArrayRef [ Dir | File ], ## no critic (ProhibitBitwiseOperators)
+    traits => ['Array'],
     handles => {
         all       => 'elements',
         as_string => [ join => $OSNAME =~ /\A MSWin/ ? q{;} : q{:} ],

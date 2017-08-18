@@ -39,10 +39,10 @@ sub apply {
     my $source = shift or return;
 
     my %property = %{ $self->_properties };
-    while ( $source =~ / \$ { [\w:.]+ } / ) {
+    while ( $source =~ / \$ [{] [\w:.]+ [}] / ) {
         my $old_source = $source;
         while ( my ( $property, $value ) = each %property ) {
-            $source =~ s/ \$ {$property} /$value/g;
+            $source =~ s/ \$ [{] $property [}] /$value/g;
         }
         last if $old_source eq $source;
     }

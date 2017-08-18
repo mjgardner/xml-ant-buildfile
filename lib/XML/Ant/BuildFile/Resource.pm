@@ -42,7 +42,7 @@ around as_string => sub {
     );
 }
 
-has content => ( ro, lazy_build, isa => Maybe );
+has content => ( ro, lazy, builder => '_build_content', isa => Maybe );
 
 around content => sub {
     my ( $orig, $self ) = splice @ARG, 0, 2;
